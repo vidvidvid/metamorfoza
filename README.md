@@ -75,7 +75,8 @@ In a new Railway project:
 | `SESSION_SECRET` | output of `openssl rand -hex 32` |
 | `ADMIN_PASSWORD` | any strong password |
 | `UPLOAD_DIR` | `/data/uploads` |
-| `NODE_ENV` | `production` |
+
+> ⚠️ **Do not set `NODE_ENV` as a Railway variable.** Next.js sets it to `production` automatically when running `next start`. If you set it at the platform level, `npm ci` skips devDependencies during the build and Tailwind/PostCSS will fail to resolve.
 
 ### 3. Deploy
 
