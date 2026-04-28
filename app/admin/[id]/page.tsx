@@ -121,13 +121,21 @@ export default async function Page({
                   <li key={f.id} className="flex items-center gap-3">
                     <a
                       href={`/api/files/${f.id}`}
-                      download={f.originalName}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={buttonVariants({
                         variant: "outline",
                         size: "sm",
                       })}
                     >
-                      ↓ {f.originalName}
+                      Odpri {f.originalName}
+                    </a>
+                    <a
+                      href={`/api/files/${f.id}?download=1`}
+                      className="font-mono text-xs text-muted-foreground hover:text-foreground"
+                      aria-label="Prenesi"
+                    >
+                      ↓ Prenesi
                     </a>
                     <span className="font-mono text-xs text-muted-foreground">
                       {(f.size / 1024 / 1024).toFixed(1)} MB

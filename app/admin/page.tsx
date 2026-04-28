@@ -4,7 +4,7 @@ import { desc, eq, sql } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { getSession } from "@/lib/session";
 import { AdminShell } from "@/components/admin-shell";
-import { Badge } from "@/components/ui/badge";
+import { InlineStatusSelect } from "@/components/inline-status-select";
 import {
   Table,
   TableBody,
@@ -43,17 +43,17 @@ export default async function Page({
       name: schema.submissions.name,
       email: schema.submissions.email,
       status: schema.submissions.status,
-      fileCount: sql<number>`count(${schema.submissionFiles.id})::int`,
+      fileId: sql<string | null>`(
+        SELECT id FROM ${schema.submissionFiles}
+        WHERE submission_id = ${schema.submissions.id}
+        ORDER BY created_at ASC
+        LIMIT 1
+      )`,
     })
     .from(schema.submissions)
-    .leftJoin(
-      schema.submissionFiles,
-      eq(schema.submissions.id, schema.submissionFiles.submissionId),
-    )
     .where(
       isValidStatus ? eq(schema.submissions.status, isValidStatus) : undefined,
     )
-    .groupBy(schema.submissions.id)
     .orderBy(desc(schema.submissions.createdAt));
 
   return (
@@ -84,14 +84,17 @@ export default async function Page({
               <TableHead>Datum</TableHead>
               <TableHead>Ime</TableHead>
               <TableHead>E-pošta</TableHead>
-              <TableHead>Status</TableHead>
               <TableHead>PDF</TableHead>
+              <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {rows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center text-muted-foreground">
+                <TableCell
+                  colSpan={5}
+                  className="text-center text-muted-foreground"
+                >
                   Ni prijav.
                 </TableCell>
               </TableRow>
@@ -119,10 +122,30 @@ export default async function Page({
                     {r.email}
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline">{STATUS_LABEL[r.status]}</Badge>
+                    {r.fileId ? (
+                      <div className="flex items-center gap-1">
+                        <a
+                          href={`/api/files/${r.fileId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-md border border-border/60 px-2 py-1 text-xs font-medium hover:bg-muted/50"
+                        >
+                          Odpri
+                        </a>
+                        <a
+                          href={`/api/files/${r.fileId}?download=1`}
+                          className="rounded-md px-2 py-1 text-xs text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+                          aria-label="Prenesi"
+                        >
+                          ↓
+                        </a>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
                   </TableCell>
-                  <TableCell className="font-mono text-xs text-muted-foreground">
-                    {r.fileCount}
+                  <TableCell>
+                    <InlineStatusSelect id={r.id} status={r.status} />
                   </TableCell>
                 </TableRow>
               ))

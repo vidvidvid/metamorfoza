@@ -10,7 +10,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(
-  _req: Request,
+  request: Request,
   ctx: { params: Promise<{ id: string }> },
 ) {
   const session = await getSession();
@@ -19,6 +19,8 @@ export async function GET(
   }
 
   const { id } = await ctx.params;
+  const isDownload =
+    new URL(request.url).searchParams.get("download") === "1";
   const [file] = await db
     .select()
     .from(schema.submissionFiles)
@@ -38,11 +40,12 @@ export async function GET(
   const nodeStream = createReadStream(file.storagePath);
   const webStream = Readable.toWeb(nodeStream) as ReadableStream<Uint8Array>;
 
+  const disposition = isDownload ? "attachment" : "inline";
   return new Response(webStream, {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Length": file.size.toString(),
-      "Content-Disposition": `attachment; filename="${encodeURIComponent(file.originalName)}"`,
+      "Content-Disposition": `${disposition}; filename="${encodeURIComponent(file.originalName)}"`,
       "Cache-Control": "private, no-store",
     },
   });
