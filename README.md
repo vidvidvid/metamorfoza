@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# metamorfoza
 
-## Getting Started
+Open-call submission site for the Metamorfoza collective.
+Fashion competition: *Globočine morja* — submissions close 2026-05-31.
 
-First, run the development server:
+## Stack
+
+- Next.js 16 (App Router, Turbopack)
+- PostgreSQL via Drizzle ORM
+- shadcn/ui + Tailwind 4
+- Iron-session cookies for admin auth
+- Railway Volume for PDF storage
+
+## Routes
+
+- `/` — public open-call landing + submission form
+- `/submit/success` — thank-you page
+- `/admin/login` — shared-password login
+- `/admin` — submissions list (filter by status)
+- `/admin/[id]` — submission detail (download PDF, set status + notes)
+
+## Environment variables
+
+Copy `.env.example` → `.env.local` and fill in:
+
+| Var | Purpose |
+|---|---|
+| `DATABASE_URL` | Postgres connection string |
+| `SESSION_SECRET` | 32+ char secret for signing admin cookies. Generate: `openssl rand -hex 32` |
+| `ADMIN_PASSWORD` | Shared password for `/admin/login` |
+| `UPLOAD_DIR` | Where PDFs are written. Local: `./data/uploads`. Railway: `/data/uploads` (on the mounted volume) |
+
+## Local development
 
 ```bash
+# 1. install
+npm install
+
+# 2. configure
+cp .env.example .env.local
+# edit .env.local — point DATABASE_URL at a local Postgres
+
+# 3. run migrations
+npm run db:migrate
+
+# 4. start dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Drizzle scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run db:generate` — generate SQL from schema changes
+- `npm run db:migrate` — apply pending migrations
+- `npm run db:push` — (dev only) push schema directly without migration files
+- `npm run db:studio` — open Drizzle Studio
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deploy to Railway
 
-## Learn More
+### 1. Create the services
 
-To learn more about Next.js, take a look at the following resources:
+In a new Railway project:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Add PostgreSQL** (New → Database → Postgres). Note the `DATABASE_URL`.
+2. **Add this app** (New → GitHub Repo → select the metamorfoza repo).
+3. **Attach a Volume** to the app service:
+   - Name: `uploads`
+   - Mount path: `/data/uploads`
+   - Size: start small (e.g. 10 GB) — easy to grow later.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 2. Set env vars on the app service
 
-## Deploy on Vercel
+| Key | Value |
+|---|---|
+| `DATABASE_URL` | `${{Postgres.DATABASE_URL}}` (reference variable) |
+| `SESSION_SECRET` | output of `openssl rand -hex 32` |
+| `ADMIN_PASSWORD` | any strong password |
+| `UPLOAD_DIR` | `/data/uploads` |
+| `NODE_ENV` | `production` |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3. Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Railway reads `railway.json` and will:
+- Build with `npm run build`
+- Start with `npm run start:prod` (which runs `drizzle-kit migrate` then `next start`)
+
+Migrations run on every boot. They're idempotent and transactional, so existing data is safe.
+
+### 4. Domain
+
+In the app service → Networking → Generate Domain (or connect a custom one later).
+
+## Data model
+
+Three tables, cascading on delete:
+
+- `submissions` — name, email, phone, concept, status, admin_notes
+- `submission_links` — many-to-one with submissions (portfolio URLs)
+- `submission_files` — many-to-one (expects 1 PDF per submission, but schema allows more)
+
+Files are streamed to `${UPLOAD_DIR}/{uuid}.pdf`. Metadata rows point to that path.
+PDF download is gated behind the admin cookie (`/api/files/[id]` streams from disk).
+
+## TODO (not yet built)
+
+- Resend email confirmation to applicant on submit
+- Per-admin auth (currently one shared password)
+- Metamorfoza metallic wordmark asset (currently CSS-gradient text)
+- Figma poster assets from dj final form
+
+## Credits
+
+Metamorfoza collective · Ljubljana
