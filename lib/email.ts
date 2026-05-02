@@ -33,7 +33,7 @@ export async function sendSubmissionConfirmation(args: {
     process.env.EMAIL_FROM ?? "Metamorfoza <hello@metamorfoza.art>";
 
   const safeName = escapeHtml(args.name);
-  const subject = "Prejeli smo tvojo prijavo · Metamorfoza";
+  const subject = "hvala za prijavo!";
 
   const html = `<!doctype html>
 <html lang="sl">
@@ -43,17 +43,11 @@ export async function sendSubmissionConfirmation(args: {
       <td align="center" style="padding:48px 16px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:12px;overflow:hidden;">
           <tr>
-            <td style="padding:40px 32px 8px 32px;">
-              <p style="margin:0;font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:#5c5c5c;">metamorfoza</p>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:8px 32px 32px 32px;color:#1a1a1a;font-size:16px;line-height:1.6;">
-              <p>Pozdravljen/a ${safeName},</p>
-              <p>Prejeli smo tvojo prijavo za odprti razpis <strong>Globočine morja</strong>.</p>
-              <p>Rok prijav je <strong>31. 5. 2026</strong>. Po koncu se ti oglasimo na ta naslov z naslednjimi koraki.</p>
-              <p>Hvala, da soustvarjaš ljubljansko podzemlje 🌊</p>
-              <p style="margin-top:32px;color:#5c5c5c;font-size:14px;">— metamorfoza · Ljubljana</p>
+            <td style="padding:40px 32px;color:#1a1a1a;font-size:17px;line-height:1.6;">
+              <p style="margin:0 0 12px 0;">hejj, ${safeName} 👋</p>
+              <p style="margin:0 0 12px 0;">hvala za prijavo!</p>
+              <p style="margin:0 0 32px 0;">če boš izbran/a, te obvestimo v začetku junija 🌊</p>
+              <p style="margin:0;color:#5c5c5c;font-size:14px;">metamorfoza</p>
             </td>
           </tr>
         </table>
@@ -63,15 +57,13 @@ export async function sendSubmissionConfirmation(args: {
 </body>
 </html>`;
 
-  const text = `Pozdravljen/a ${args.name},
+  const text = `hejj, ${args.name} 👋
 
-Prejeli smo tvojo prijavo za odprti razpis Globočine morja.
+hvala za prijavo!
 
-Rok prijav je 31. 5. 2026. Po koncu se ti oglasimo na ta naslov z naslednjimi koraki.
+če boš izbran/a, te obvestimo v začetku junija 🌊
 
-Hvala, da soustvarjaš ljubljansko podzemlje.
-
-— metamorfoza · Ljubljana`;
+metamorfoza`;
 
   const { error } = await c.emails.send({
     from,
