@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Playfair_Display,
+  Caveat,
+} from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { Bubbles } from "@/components/bubbles";
 import "./globals.css";
@@ -11,6 +16,17 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin", "latin-ext"],
+});
+
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin", "latin-ext"],
+  style: ["italic"],
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
   subsets: ["latin", "latin-ext"],
 });
 
@@ -28,7 +44,7 @@ export default function RootLayout({
   return (
     <html
       lang="sl"
-      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${caveat.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Bubbles />

@@ -19,12 +19,41 @@ export default function Page() {
           sizes="(max-width: 768px) 90vw, 600px"
           className="mx-auto h-auto w-full max-w-[600px]"
         />
-        <div className="space-y-1 text-lg sm:text-xl">
-          <p className="font-medium tracking-wide">
+        <div className="space-y-3">
+          <p className="text-lg font-medium tracking-wide sm:text-xl">
             Soustvarjaj podzemlje Ljubljane
           </p>
-          <p className="text-muted-foreground">
-            Priložnost · Mladost · Fashion design · Sustainability
+          <p className="flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 text-muted-foreground/70">
+            <span
+              className="text-base italic"
+              style={{ fontFamily: "var(--font-playfair)" }}
+            >
+              Priložnost
+            </span>
+            <span aria-hidden className="text-xs opacity-50">
+              ✦
+            </span>
+            <span className="text-sm font-bold uppercase tracking-[0.3em]">
+              Mladost
+            </span>
+            <span aria-hidden className="text-xs opacity-50">
+              ✦
+            </span>
+            <span
+              className="text-2xl"
+              style={{ fontFamily: "var(--font-caveat)" }}
+            >
+              fashion design
+            </span>
+            <span aria-hidden className="text-xs opacity-50">
+              ✦
+            </span>
+            <span
+              className="text-[10px] lowercase"
+              style={{ fontFamily: "var(--font-geist-mono)" }}
+            >
+              sustainability
+            </span>
           </p>
         </div>
       </header>
@@ -62,7 +91,7 @@ export default function Page() {
       </Card>
 
       <footer className="pt-8 text-center text-xs text-muted-foreground">
-        <p>metamorfoza collective · Ljubljana</p>
+        <p>metamorfoza · Ljubljana</p>
       </footer>
     </main>
   );
