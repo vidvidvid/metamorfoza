@@ -1,0 +1,1 @@
+ALTER TABLE "submissions" ADD COLUMN "date_of_birth" date;

@@ -9,6 +9,22 @@ import { EditForm } from "./edit-form";
 
 export const dynamic = "force-dynamic";
 
+function formatDob(value: string): string {
+  const [y, m, d] = value.split("-");
+  return `${d}. ${m}. ${y}`;
+}
+
+function ageFromDob(value: string): number {
+  const dob = new Date(value);
+  const now = new Date();
+  let age = now.getFullYear() - dob.getFullYear();
+  const beforeBirthday =
+    now.getMonth() < dob.getMonth() ||
+    (now.getMonth() === dob.getMonth() && now.getDate() < dob.getDate());
+  if (beforeBirthday) age -= 1;
+  return age;
+}
+
 export default async function Page({
   params,
 }: {
@@ -76,6 +92,12 @@ export default async function Page({
                 </>
               )}
             </p>
+            {submission.dateOfBirth && (
+              <p className="mt-1 text-sm text-muted-foreground">
+                Rojen/a: {formatDob(submission.dateOfBirth)} ·{" "}
+                {ageFromDob(submission.dateOfBirth)} let
+              </p>
+            )}
           </div>
 
           <div>

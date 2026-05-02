@@ -29,6 +29,7 @@ export async function POST(request: Request) {
     name: formData.get("name"),
     email: formData.get("email"),
     phone: formData.get("phone") ?? "",
+    dateOfBirth: formData.get("dateOfBirth"),
     concept: formData.get("concept"),
     links: rawLinks.filter(Boolean),
   });
@@ -87,6 +88,7 @@ export async function POST(request: Request) {
         name: parsed.data.name,
         email: parsed.data.email,
         phone: parsed.data.phone || null,
+        dateOfBirth: parsed.data.dateOfBirth,
         concept: parsed.data.concept,
       })
       .returning({ id: schema.submissions.id });

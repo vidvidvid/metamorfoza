@@ -13,6 +13,16 @@ export const submissionSchema = z.object({
   name: z.string().trim().min(1, "Ime je obvezno").max(200),
   email: z.string().trim().email("Neveljaven e-poštni naslov").max(320),
   phone: z.string().trim().max(50).optional().or(z.literal("")),
+  dateOfBirth: z
+    .string()
+    .trim()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Neveljaven datum")
+    .refine((v) => {
+      const d = new Date(v);
+      const min = new Date("1900-01-01");
+      const max = new Date();
+      return !Number.isNaN(d.getTime()) && d >= min && d <= max;
+    }, "Neveljaven datum"),
   concept: z
     .string()
     .trim()

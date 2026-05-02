@@ -31,6 +31,7 @@ export function SubmissionForm() {
       name: "",
       email: "",
       phone: "",
+      dateOfBirth: "",
       concept: "",
       links: [],
     },
@@ -68,6 +69,7 @@ export function SubmissionForm() {
     formData.set("name", data.name);
     formData.set("email", data.email);
     formData.set("phone", data.phone ?? "");
+    formData.set("dateOfBirth", data.dateOfBirth);
     formData.set("concept", data.concept);
     for (const link of data.links) {
       if (link.url) formData.append("links", JSON.stringify(link));
@@ -148,6 +150,22 @@ export function SubmissionForm() {
       </div>
 
       <div className="space-y-2">
+        <Label htmlFor="dateOfBirth">Datum rojstva *</Label>
+        <Input
+          id="dateOfBirth"
+          type="date"
+          autoComplete="bday"
+          max={new Date().toISOString().slice(0, 10)}
+          {...register("dateOfBirth")}
+        />
+        {errors.dateOfBirth && (
+          <p className="text-sm text-destructive">
+            {errors.dateOfBirth.message}
+          </p>
+        )}
+      </div>
+
+      <div className="space-y-2">
         <Label htmlFor="concept">Opis koncepta *</Label>
         <Textarea
           id="concept"
@@ -206,7 +224,10 @@ export function SubmissionForm() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="pdf">PDF prijava * (največ 100 MB)</Label>
+        <Label htmlFor="pdf">PDF prijava *</Label>
+        <p className="text-sm text-muted-foreground">
+          Naj vključuje portfolio in vision board / moodboard. Največ 100 MB.
+        </p>
         <Input
           id="pdf"
           type="file"

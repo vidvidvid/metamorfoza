@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SubmissionForm } from "@/components/submission-form";
 import { Card } from "@/components/ui/card";
 
@@ -8,9 +9,16 @@ export default function Page() {
         <p className="font-mono text-xs uppercase tracking-[0.4em] text-primary/80">
           !!! OPEN CALL !!!
         </p>
-        <h1 className="wordmark text-5xl font-bold uppercase sm:text-7xl">
-          Metamorfoza
-        </h1>
+        <h1 className="sr-only">Metamorfoza</h1>
+        <Image
+          src="/metamorfoza-wordmark.png"
+          alt="Metamorfoza"
+          width={1600}
+          height={950}
+          priority
+          sizes="(max-width: 768px) 90vw, 600px"
+          className="mx-auto h-auto w-full max-w-[600px]"
+        />
         <div className="space-y-1 text-lg sm:text-xl">
           <p className="font-medium tracking-wide">
             Soustvarjaj podzemlje Ljubljane
@@ -54,7 +62,7 @@ export default function Page() {
       </Card>
 
       <footer className="pt-8 text-center text-xs text-muted-foreground">
-        <p>metamorfoza collective · ljubljana</p>
+        <p>metamorfoza collective · Ljubljana</p>
       </footer>
     </main>
   );
