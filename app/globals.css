@@ -121,11 +121,15 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html,
   body {
-    @apply bg-background text-foreground;
+    overscroll-behavior-y: none;
   }
   html {
     @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
   .dark body {
     background:

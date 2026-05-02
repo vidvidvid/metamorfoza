@@ -24,9 +24,10 @@ export function SubmissionForm() {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<SubmissionInput>({
     resolver: zodResolver(submissionSchema),
+    mode: "onChange",
     defaultValues: {
       name: "",
       email: "",
@@ -260,7 +261,7 @@ export function SubmissionForm() {
         type="submit"
         size="lg"
         className="w-full"
-        disabled={uploading || isPending}
+        disabled={!isValid || !pdf || uploading || isPending}
       >
         {uploading ? "Pošiljam…" : "Oddaj prijavo"}
       </Button>
