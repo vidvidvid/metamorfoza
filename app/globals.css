@@ -154,15 +154,23 @@
 
 @keyframes bubble-rise {
   0% {
-    transform: translateY(0) translateX(0) scale(0.85);
+    transform: translateY(0) translateX(0) scale(0.82, 0.95);
     opacity: 0;
   }
   10% {
     opacity: var(--bubble-opacity, 0.35);
   }
+  25% {
+    transform: translateY(-28vh)
+      translateX(calc(var(--bubble-sway, 25px) * 0.45)) scale(1.02, 0.97);
+  }
   50% {
     transform: translateY(-55vh) translateX(var(--bubble-sway, 25px))
-      scale(1);
+      scale(0.97, 1.03);
+  }
+  75% {
+    transform: translateY(-82vh)
+      translateX(calc(var(--bubble-sway, 25px) * 0.4)) scale(1.01, 0.99);
   }
   90% {
     opacity: var(--bubble-opacity, 0.35);
@@ -178,17 +186,59 @@
   position: absolute;
   bottom: -60px;
   border-radius: 9999px;
-  background: radial-gradient(
-    circle at 30% 30%,
-    oklch(0.95 0.04 200 / 70%),
-    oklch(0.6 0.14 175 / 25%) 55%,
-    oklch(0.4 0.18 260 / 10%) 100%
-  );
-  border: 1px solid oklch(0.95 0.04 200 / 25%);
-  box-shadow: inset 0 0 8px oklch(0.95 0.04 200 / 15%);
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      transparent 58%,
+      oklch(0.95 0.05 195 / 35%) 78%,
+      transparent 90%
+    ),
+    radial-gradient(
+      circle at 35% 32%,
+      oklch(0.93 0.06 195 / 60%),
+      oklch(0.55 0.16 180 / 30%) 55%,
+      oklch(0.22 0.13 265 / 10%) 100%
+    );
+  border: 1px solid oklch(0.95 0.05 200 / 40%);
+  box-shadow:
+    inset 0 -6px 12px oklch(0.18 0.12 265 / 35%),
+    inset 0 3px 6px oklch(0.96 0.05 200 / 30%),
+    0 3px 14px oklch(0.5 0.16 180 / 20%);
   animation: bubble-rise var(--bubble-duration, 18s) linear
     var(--bubble-delay, 0s) infinite;
   will-change: transform, opacity;
+}
+
+.bubble::before {
+  content: "";
+  position: absolute;
+  top: 14%;
+  left: 18%;
+  width: 32%;
+  height: 26%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    ellipse,
+    oklch(0.98 0.03 200 / 95%),
+    oklch(0.96 0.04 195 / 0%) 65%
+  );
+  filter: blur(1px);
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  bottom: 18%;
+  right: 22%;
+  width: 16%;
+  height: 12%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    ellipse,
+    oklch(0.95 0.05 195 / 55%),
+    oklch(0.95 0.05 195 / 0%) 70%
+  );
+  filter: blur(0.5px);
 }
 
 .wordmark {
