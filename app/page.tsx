@@ -21,7 +21,18 @@ export default function Page() {
         />
         <div className="space-y-3">
           <p className="text-lg font-medium tracking-wide sm:text-xl">
-            Soustvarjaj podzemlje Ljubljane
+            Soustvarjaj{" "}
+            <span
+              className="inline-block translate-y-[2px] text-[0.95em] uppercase tracking-tight text-foreground"
+              style={{
+                fontFamily: "var(--font-distressed)",
+                textShadow:
+                  "0 1px 0 rgba(0,0,0,0.8), 0 2px 6px rgba(94,234,212,0.25), 0 0 14px rgba(30,58,138,0.4)",
+              }}
+            >
+              podzemlje
+            </span>{" "}
+            Ljubljane
           </p>
           <p className="flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 text-muted-foreground/70">
             <span

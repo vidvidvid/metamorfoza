@@ -4,6 +4,7 @@ import {
   Geist_Mono,
   Playfair_Display,
   Caveat,
+  Rubik_Distressed,
 } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { Bubbles } from "@/components/bubbles";
@@ -30,6 +31,12 @@ const caveat = Caveat({
   subsets: ["latin", "latin-ext"],
 });
 
+const rubikDistressed = Rubik_Distressed({
+  variable: "--font-distressed",
+  subsets: ["latin", "latin-ext"],
+  weight: "400",
+});
+
 export const metadata: Metadata = {
   title: "Metamorfoza — Open Call: Globočine morja",
   description:
@@ -44,7 +51,7 @@ export default function RootLayout({
   return (
     <html
       lang="sl"
-      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${caveat.variable} dark h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${caveat.variable} ${rubikDistressed.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Bubbles />
