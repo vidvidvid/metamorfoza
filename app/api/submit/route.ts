@@ -27,6 +27,7 @@ export async function POST(request: Request) {
 
   const parsed = submissionSchema.safeParse({
     name: formData.get("name"),
+    artistName: formData.get("artistName") ?? "",
     email: formData.get("email"),
     phone: formData.get("phone") ?? "",
     dateOfBirth: formData.get("dateOfBirth"),
@@ -86,6 +87,7 @@ export async function POST(request: Request) {
       .insert(schema.submissions)
       .values({
         name: parsed.data.name,
+        artistName: parsed.data.artistName || null,
         email: parsed.data.email,
         phone: parsed.data.phone || null,
         dateOfBirth: parsed.data.dateOfBirth,

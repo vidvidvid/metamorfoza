@@ -30,6 +30,7 @@ export function SubmissionForm() {
     mode: "onChange",
     defaultValues: {
       name: "",
+      artistName: "",
       email: "",
       phone: "",
       dateOfBirth: "",
@@ -68,6 +69,7 @@ export function SubmissionForm() {
 
     const formData = new FormData();
     formData.set("name", data.name);
+    formData.set("artistName", data.artistName ?? "");
     formData.set("email", data.email);
     formData.set("phone", data.phone ?? "");
     formData.set("dateOfBirth", data.dateOfBirth);
@@ -115,12 +117,27 @@ export function SubmissionForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="name">Ime in priimek *</Label>
-        <Input id="name" autoComplete="name" {...register("name")} />
-        {errors.name && (
-          <p className="text-sm text-destructive">{errors.name.message}</p>
-        )}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="name">Ime in priimek *</Label>
+          <Input id="name" autoComplete="name" {...register("name")} />
+          {errors.name && (
+            <p className="text-sm text-destructive">{errors.name.message}</p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="artistName">Umetniško ime</Label>
+          <Input
+            id="artistName"
+            placeholder="po želji"
+            {...register("artistName")}
+          />
+          {errors.artistName && (
+            <p className="text-sm text-destructive">
+              {errors.artistName.message}
+            </p>
+          )}
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -227,7 +244,7 @@ export function SubmissionForm() {
       <div className="space-y-2">
         <Label htmlFor="pdf">PDF prijava *</Label>
         <p className="text-sm text-muted-foreground">
-          Naj vključuje portfolio in vision board / moodboard. Največ 100 MB.
+          Naj vključuje skice in vision board / moodboard. Največ 100 MB.
         </p>
         <Input
           id="pdf"

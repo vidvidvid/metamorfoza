@@ -72,7 +72,14 @@ export default async function Page({
                 timeStyle: "short",
               }).format(submission.createdAt)}
             </p>
-            <h1 className="mt-2 text-3xl font-semibold">{submission.name}</h1>
+            <h1 className="mt-2 text-3xl font-semibold">
+              {submission.name}
+              {submission.artistName && (
+                <span className="ml-3 text-xl font-normal text-muted-foreground">
+                  aka {submission.artistName}
+                </span>
+              )}
+            </h1>
             <p className="text-muted-foreground">
               <a
                 href={`mailto:${submission.email}`}

@@ -25,6 +25,7 @@ export const submissions = pgTable(
       .notNull()
       .defaultNow(),
     name: varchar("name", { length: 200 }).notNull(),
+    artistName: varchar("artist_name", { length: 200 }),
     email: varchar("email", { length: 320 }).notNull(),
     phone: varchar("phone", { length: 50 }),
     dateOfBirth: date("date_of_birth"),

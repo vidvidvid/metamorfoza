@@ -11,6 +11,7 @@ export const submissionLinkSchema = z.object({
 
 export const submissionSchema = z.object({
   name: z.string().trim().min(1, "Ime je obvezno").max(200),
+  artistName: z.string().trim().max(200).optional().or(z.literal("")),
   email: z.string().trim().email("Neveljaven e-poštni naslov").max(320),
   phone: z.string().trim().max(50).optional().or(z.literal("")),
   dateOfBirth: z
