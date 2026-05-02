@@ -49,7 +49,7 @@ export default function Page() {
               ✦
             </span>
             <span
-              className="text-[10px] lowercase"
+              className="text-base lowercase"
               style={{ fontFamily: "var(--font-geist-mono)" }}
             >
               sustainability
