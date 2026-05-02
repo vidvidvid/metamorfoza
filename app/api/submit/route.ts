@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db, schema } from "@/lib/db";
 import { submissionSchema } from "@/lib/validation";
 import { FileTooLargeError, MAX_PDF_BYTES, writePdf } from "@/lib/storage";
+import { sendSubmissionConfirmation } from "@/lib/email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -111,6 +112,15 @@ export async function POST(request: Request) {
       size: written.size,
       storagePath: written.storagePath,
     });
+
+    try {
+      await sendSubmissionConfirmation({
+        to: parsed.data.email,
+        name: parsed.data.artistName || parsed.data.name,
+      });
+    } catch (emailErr) {
+      console.error("[submit] confirmation email failed", emailErr);
+    }
 
     return NextResponse.json({ ok: true, id: submission.id });
   } catch (err) {
