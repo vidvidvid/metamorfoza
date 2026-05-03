@@ -244,7 +244,7 @@ export function SubmissionForm() {
       <div className="space-y-2">
         <Label htmlFor="pdf">PDF prijava *</Label>
         <p className="text-sm text-muted-foreground">
-          Naj vključuje skice in vision board / moodboard. Največ 100 MB.
+          Naj vključuje skice (vsaj 3) in vision board / moodboard. Največ 100 MB.
         </p>
         <Input
           id="pdf"
