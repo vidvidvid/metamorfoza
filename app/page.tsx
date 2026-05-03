@@ -82,7 +82,15 @@ export default function Page() {
           </p>
         </div>
         <p className="text-sm text-muted-foreground">
-          !! Material provided by <span className="font-semibold">ŠTOFF</span>{" "}
+          !! Material provided by{" "}
+          <a
+            href="https://anselma.si/stoff"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-foreground underline decoration-primary/60 underline-offset-4 transition hover:text-primary"
+          >
+            ŠTOFF
+          </a>{" "}
           !!
         </p>
         <p className="font-mono text-sm uppercase tracking-[0.2em]">
@@ -101,7 +109,33 @@ export default function Page() {
         <SubmissionForm />
       </Card>
 
-      <footer className="pt-8 text-center text-xs text-muted-foreground">
+      <footer className="flex flex-col items-center gap-3 pt-8 text-center text-xs text-muted-foreground">
+        <a
+          href="https://www.instagram.com/m3tam0rfoza/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="metamorfoza na Instagramu"
+          className="inline-flex items-center gap-2 rounded-full border border-border/40 bg-card/40 px-4 py-2 text-foreground/80 transition hover:border-primary/60 hover:text-primary"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-4 w-4"
+            aria-hidden="true"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="5" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+          </svg>
+          <span className="font-mono text-xs uppercase tracking-[0.25em]">
+            @m3tam0rfoza
+          </span>
+        </a>
         <p>metamorfoza · Ljubljana</p>
       </footer>
     </main>
