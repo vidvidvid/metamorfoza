@@ -82,9 +82,10 @@ In a new Railway project:
 
 Railway reads `railway.json` and will:
 - Build with `npm run build`
-- Start with `npm run start:prod` (which runs `drizzle-kit migrate` then `next start`)
+- Run `npm run db:migrate` as a pre-deploy step (once per deploy, before the new instance goes live)
+- Start with `npm run start` (`next start`)
 
-Migrations run on every boot. They're idempotent and transactional, so existing data is safe.
+Migrations run once per deploy, not on every container restart. If migrations fail the deploy is rejected, so the previous version keeps serving. Migrations are idempotent and transactional, so existing data is safe.
 
 ### 4. Domain
 
