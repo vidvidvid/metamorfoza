@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { SubmissionForm } from "@/components/submission-form";
+import { Countdown } from "@/components/countdown";
 import { Card } from "@/components/ui/card";
 
 export default function Page() {
@@ -93,9 +94,7 @@ export default function Page() {
           </a>{" "}
           !!
         </p>
-        <p className="font-mono text-sm uppercase tracking-[0.2em]">
-          Rok prijav: 31. 5. 2026
-        </p>
+        <Countdown />
       </section>
 
       <Card className="border-border/40 bg-card/60 p-6 backdrop-blur-sm sm:p-10">

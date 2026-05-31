@@ -40,7 +40,7 @@ const rubikDistressed = Rubik_Distressed({
 export const metadata: Metadata = {
   title: "Metamorfoza — Open Call: Globočine morja",
   description:
-    "Soustvarjaj ljubljansko podzemlje. Odprt razpis za mlade oblikovalce — tema: Globočine morja. Prijave do 31. 5. 2026.",
+    "Soustvarjaj ljubljansko podzemlje. Odprt razpis za mlade oblikovalce — tema: Globočine morja. Prijave do 1. 6. 2026.",
 };
 
 export default function RootLayout({
