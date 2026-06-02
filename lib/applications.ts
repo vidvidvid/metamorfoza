@@ -3,4 +3,4 @@
 export const APPLICATIONS_CLOSED = true;
 
 export const APPLICATIONS_CLOSED_MESSAGE =
-  "Hvala za prijave! Zmagovalce razglasimo kmalu! <3";
+  "Hvala za prijave! Izbrane razglasimo kmalu! <3";
