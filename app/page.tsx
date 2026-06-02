@@ -2,6 +2,10 @@ import Image from "next/image";
 import { SubmissionForm } from "@/components/submission-form";
 import { Countdown } from "@/components/countdown";
 import { Card } from "@/components/ui/card";
+import {
+  APPLICATIONS_CLOSED,
+  APPLICATIONS_CLOSED_MESSAGE,
+} from "@/lib/applications";
 
 export default function Page() {
   return (
@@ -20,7 +24,7 @@ export default function Page() {
           sizes="(max-width: 768px) 90vw, 600px"
           className="mx-auto h-auto w-full max-w-[600px]"
         />
-        <div className="space-y-3">
+        <div className="-mt-4 space-y-3">
           <p className="text-lg font-medium tracking-wide sm:text-xl">
             Soustvarjaj{" "}
             <span
@@ -94,19 +98,27 @@ export default function Page() {
           </a>{" "}
           !!
         </p>
-        <Countdown />
+        {!APPLICATIONS_CLOSED && <Countdown />}
       </section>
 
-      <Card className="border-border/40 bg-card/60 p-6 backdrop-blur-sm sm:p-10">
-        <div className="mb-6 space-y-1">
-          <h3 className="text-xl font-semibold">Prijavnica</h3>
-          <p className="text-sm text-muted-foreground">
-            Izpolni obrazec, priloži portfolio v PDF in svoj koncept. Polja z
-            * so obvezna.
+      {APPLICATIONS_CLOSED ? (
+        <Card className="border-border/40 bg-card/60 p-8 text-center backdrop-blur-sm sm:p-12">
+          <p className="text-xl font-medium leading-relaxed sm:text-2xl">
+            {APPLICATIONS_CLOSED_MESSAGE}
           </p>
-        </div>
-        <SubmissionForm />
-      </Card>
+        </Card>
+      ) : (
+        <Card className="border-border/40 bg-card/60 p-6 backdrop-blur-sm sm:p-10">
+          <div className="mb-6 space-y-1">
+            <h3 className="text-xl font-semibold">Prijavnica</h3>
+            <p className="text-sm text-muted-foreground">
+              Izpolni obrazec, priloži portfolio v PDF in svoj koncept. Polja
+              z * so obvezna.
+            </p>
+          </div>
+          <SubmissionForm />
+        </Card>
+      )}
 
       <footer className="flex flex-col items-center gap-3 pt-8 text-center text-xs text-muted-foreground">
         <a

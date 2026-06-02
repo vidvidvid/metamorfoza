@@ -3,11 +3,22 @@ import { db, schema } from "@/lib/db";
 import { submissionSchema } from "@/lib/validation";
 import { FileTooLargeError, MAX_PDF_BYTES, writePdf } from "@/lib/storage";
 import { sendSubmissionConfirmation } from "@/lib/email";
+import {
+  APPLICATIONS_CLOSED,
+  APPLICATIONS_CLOSED_MESSAGE,
+} from "@/lib/applications";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
+  if (APPLICATIONS_CLOSED) {
+    return NextResponse.json(
+      { error: APPLICATIONS_CLOSED_MESSAGE },
+      { status: 403 },
+    );
+  }
+
   let formData: FormData;
   try {
     formData = await request.formData();
