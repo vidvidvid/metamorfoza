@@ -22,6 +22,20 @@
       "when": 1777747880339,
       "tag": "0002_nostalgic_exiles",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1785670380049,
+      "tag": "0003_luxuriant_clint_barton",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1785670766757,
+      "tag": "0004_whole_moon_knight",
+      "breakpoints": true
     }
   ]
 }
