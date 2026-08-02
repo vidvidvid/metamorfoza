@@ -72,13 +72,13 @@ export function ShinyEntries({
   return (
     <section className="rounded-lg border border-amber-400/40 bg-gradient-to-br from-amber-400/10 to-yellow-400/5 p-4">
       <h2 className="text-sm font-semibold">
-        ✦ Shiny kartice — prejšnja edicija{" "}
+        ✦ Shiny karte — prejšnja edicija{" "}
         <span className="font-normal text-muted-foreground">
           ({sorted.length})
         </span>
       </h2>
       <p className="mt-1 text-xs text-muted-foreground">
-        Prost vstop s shiny kartico prejšnje edicije — vpiši njeno številko.
+        Prost vstop s shiny karto prejšnje edicije — vpiši njeno številko.
       </p>
       <form action={handleAdd} className="mt-3 flex gap-2">
         <Input
@@ -88,7 +88,7 @@ export function ShinyEntries({
           inputMode="numeric"
           min={1}
           max={9999}
-          placeholder="Št. kartice"
+          placeholder="Št. karte"
           required
           className="w-32"
         />

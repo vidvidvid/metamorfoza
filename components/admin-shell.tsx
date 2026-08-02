@@ -30,7 +30,7 @@ export function AdminShell({
             <NavTab href="/admin" label="Prijave" active={active === "prijave"} />
             <NavTab
               href="/admin/cards"
-              label="Kartice"
+              label="Karte"
               active={active === "kartice"}
             />
           </nav>

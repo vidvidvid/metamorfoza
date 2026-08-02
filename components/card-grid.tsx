@@ -60,7 +60,7 @@ export function CardGrid({
       try {
         await setCardMarkAction(fd);
       } catch {
-        toast.error(`Napaka pri shranjevanju kartice ${cardNumber}`);
+        toast.error(`Napaka pri shranjevanju karte ${cardNumber}`);
       }
     });
   }
@@ -95,7 +95,7 @@ export function CardGrid({
               key={n}
               type="button"
               onClick={() => handleTap(n)}
-              aria-label={`Kartica ${n}`}
+              aria-label={`Karta ${n}`}
               className={cn(
                 "flex aspect-square touch-manipulation items-center justify-center rounded-md border text-sm font-medium tabular-nums transition-colors select-none active:scale-95",
                 MARK_CLASS[mark],
