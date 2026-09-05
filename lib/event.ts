@@ -30,6 +30,8 @@ export const EVENT = {
 export type Person = {
   name: string;
   handle?: string;
+  /** Vloga v ekipi (npr. VJ, Luči). */
+  role?: string;
   /** Spletna stran, če ni Instagrama. */
   url?: string;
   /** Portret 4:5 v public/deep-sea/people (800 px). */
@@ -88,13 +90,47 @@ export const LINEUP: Person[] = [
 ];
 
 export const DECOR: Person[] = [
-  { name: "Pixel Bambi", handle: "pixel.bambi", avatar: `${P}/avatar-pixel.bambi.webp` },
-  { name: "Vikipiki", handle: "vikipiki.pokes", avatar: `${P}/avatar-vikipiki.pokes.webp` },
-  { name: "Nauticaa", handle: "maist0rica", avatar: `${P}/avatar-maist0rica.webp` },
-  { name: "Iskra Razum", handle: "iskrrq", avatar: `${P}/avatar-iskrrq.webp` },
-  { name: "Vita Tušek", handle: "vitatusek", avatar: `${P}/avatar-vitatusek.webp` },
-  { name: "Simona", handle: "kravzla", avatar: `${P}/avatar-kravzla.webp` },
-  { name: "Lucija Zivina", handle: "z1v1na", avatar: `${P}/avatar-z1v1na.webp` },
+  {
+    name: "Pixel Bambi",
+    role: "VJ",
+    handle: "pixel.bambi",
+    avatar: `${P}/avatar-pixel.bambi.webp`,
+  },
+  {
+    name: "Vikipiki",
+    handle: "vikipiki.pokes",
+    avatar: `${P}/avatar-vikipiki.pokes.webp`,
+  },
+  {
+    name: "Nauticaa",
+    role: "Scenografija",
+    handle: "maist0rica",
+    avatar: `${P}/avatar-maist0rica.webp`,
+  },
+  {
+    name: "Iskra Razum",
+    role: "Scenografija · Luči",
+    handle: "iskrrq",
+    avatar: `${P}/avatar-iskrrq.webp`,
+  },
+  {
+    name: "Vita Tušek",
+    role: "Luči",
+    handle: "vitatusek",
+    avatar: `${P}/avatar-vitatusek.webp`,
+  },
+  {
+    name: "Simona",
+    role: "Luči",
+    handle: "kravzla",
+    avatar: `${P}/avatar-kravzla.webp`,
+  },
+  {
+    name: "Lucija Zivina",
+    role: "Luči",
+    handle: "z1v1na",
+    avatar: `${P}/avatar-z1v1na.webp`,
+  },
 ];
 
 export const CREDITS: { role: string; person: Person }[] = [

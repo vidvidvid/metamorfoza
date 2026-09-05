@@ -243,8 +243,8 @@ export default function Page() {
         </div>
         <ul className="flex flex-wrap justify-center gap-3">
           {DECOR.map((p) => (
-            <li key={p.name} className="w-[calc(50%-0.375rem)] sm:w-[calc(25%-0.5625rem)]">
-              <PersonCard person={p} compact />
+            <li key={p.name} className="w-full sm:w-[calc(25%-0.5625rem)]">
+              <PersonCard person={p} label={p.role} compact />
             </li>
           ))}
         </ul>
@@ -252,7 +252,7 @@ export default function Page() {
           <SectionLabel>Za odsev vaše podobe na gladini resnice</SectionLabel>
           <h2 className="headline text-4xl sm:text-5xl">Ekipa</h2>
         </div>
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        <ul className="grid gap-3 sm:grid-cols-3 sm:gap-4">
           {CREDITS.map(({ role, person }) => (
             <li key={person.name}>
               <PersonCard person={person} label={role || undefined} featured />
