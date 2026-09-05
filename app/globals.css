@@ -230,6 +230,43 @@
   filter: blur(0.5px);
 }
 
+/* Mehurčki ob kliku: isti videz, kratek naključen dvig iz točke klika. */
+.bubble-burst {
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  animation: bubble-burst var(--burst-duration, 1.8s)
+    cubic-bezier(0.2, 0.6, 0.3, 1) var(--burst-delay, 0s) 1 both;
+}
+
+@keyframes bubble-burst {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--bubble-opacity, 0.6);
+    transform: translate(-50%, -50%) scale(1.05, 0.95);
+  }
+  55% {
+    transform: translate(
+        calc(-50% + var(--burst-sway, 0px) * 0.6),
+        calc(-50% - var(--burst-rise, 200px) * 0.55)
+      )
+      scale(0.96, 1.04);
+  }
+  85% {
+    opacity: var(--bubble-opacity, 0.6);
+  }
+  100% {
+    transform: translate(
+        calc(-50% + var(--burst-sway, 0px)),
+        calc(-50% - var(--burst-rise, 200px))
+      )
+      scale(1.15);
+    opacity: 0;
+  }
+}
+
 /* ---------- Deep Sea utilities ---------- */
 
 /* Roza naslov v slogu "DEEP SEA" iz logotipa. */
@@ -302,6 +339,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .bubble,
+  .bubble-burst,
   .float-slow,
   .marquee-track {
     animation: none;

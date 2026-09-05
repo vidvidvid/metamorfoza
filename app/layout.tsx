@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Rubik } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { Bubbles } from "@/components/bubbles";
+import { ClickBubbles } from "@/components/click-bubbles";
 import { SeaBackground } from "@/components/sea-background";
 import { EVENT } from "@/lib/event";
 import "./globals.css";
@@ -52,6 +53,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <SeaBackground />
         <Bubbles />
+        <ClickBubbles />
         {children}
         <Toaster richColors position="top-center" />
       </body>
