@@ -12,8 +12,12 @@ type Burst = {
   duration: number;
   delay: number;
   opacity: number;
+  hue: number;
   ttl: number;
 };
+
+// Odtenki iz palete: roza, cian, vijolična, bioluminiscenčna zelena, modra.
+const HUES = [348, 230, 290, 160, 200, 320, 260];
 
 const r = (min: number, max: number) => min + Math.random() * (max - min);
 
@@ -36,7 +40,8 @@ export function ClickBubbles() {
           id: nextId++,
           x: e.clientX + r(-14, 14),
           y: e.clientY + r(-10, 10),
-          size: r(5, 30) * (Math.random() < 0.15 ? 1.6 : 1),
+          size: r(10, 48) * (Math.random() < 0.18 ? 1.7 : 1),
+          hue: HUES[Math.floor(Math.random() * HUES.length)] + r(-12, 12),
           rise: r(90, 320),
           sway: r(-70, 70),
           duration,
@@ -77,6 +82,7 @@ export function ClickBubbles() {
               "--burst-duration": `${b.duration}s`,
               "--burst-delay": `${b.delay}s`,
               "--bubble-opacity": b.opacity,
+              "--h": b.hue,
             } as React.CSSProperties
           }
         />
