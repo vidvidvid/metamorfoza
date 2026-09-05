@@ -112,7 +112,14 @@ export const CREDITS: { role: string; person: Person }[] = [
     role: "Make up",
     person: { name: "Sara Šček", handle: "sara_scek", avatar: `${P}/avatar-sara_scek.webp` },
   },
-  { role: "", person: { name: "Lovrency in mala roza muca" } },
+  {
+    role: "Creative fashion lord",
+    person: { name: "Lovrency", avatar: `${P}/avatar-lovrency.webp` },
+  },
+  {
+    role: "Creative sugar unc",
+    person: { name: "Mala roza muca", avatar: `${P}/avatar-mala-roza-muca.webp` },
+  },
 ];
 
 export function instagramUrl(handle: string) {
