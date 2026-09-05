@@ -1,4 +1,5 @@
 import Image from "next/image";
+import localFont from "next/font/local";
 import { MapPin, Clock, CalendarDays, ExternalLink } from "lucide-react";
 import { InstagramIcon } from "@/components/instagram-icon";
 import { SubmissionForm } from "@/components/submission-form";
@@ -17,6 +18,13 @@ import {
   instagramUrl,
   type Person,
 } from "@/lib/event";
+
+// Tentacles (Jeff Bensch) — lovke z brisalkami iz vsake črke, samo za ime bitja.
+const tentacles = localFont({
+  src: "./fonts-local/Tentacles.ttf",
+  display: "swap",
+  variable: "--font-tentacles",
+});
 
 const MARQUEE = [
   "Metamorfoza vol. 3",
@@ -132,12 +140,14 @@ export default function Page() {
         </div>
         <div className="space-y-6 text-center sm:text-left">
           <SectionLabel>Bitje edicije</SectionLabel>
-          <h2 className="headline-outline text-5xl sm:text-6xl">
+          <h2
+            className={`${tentacles.className} text-7xl leading-none text-foreground drop-shadow-[0_0_2px_oklch(0.63_0.26_348)] [filter:drop-shadow(0_0_2px_oklch(0.63_0.26_348))_drop-shadow(0_0_22px_oklch(0.63_0.26_348/70%))] sm:text-8xl`}
+          >
             {EVENT.creature.name}
           </h2>
           <p className="text-muted-foreground">
             Iz morskega dna Marjanskega jaška prihaja na površje. Na vsaki
-            karti tretje edicije. Bo tvoja shiny?
+            karti tretje edicije. Bo tvoja <span className="shiny">shiny</span>?
           </p>
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
             Ilustracija:{" "}

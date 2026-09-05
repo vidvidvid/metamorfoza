@@ -331,6 +331,31 @@
   letter-spacing: 0.02em;
 }
 
+/* Holografski shimmer, kot shiny karta. */
+.shiny {
+  font-weight: 700;
+  background: linear-gradient(
+    100deg,
+    oklch(0.63 0.26 348),
+    oklch(0.96 0.02 230) 30%,
+    oklch(0.72 0.14 225) 50%,
+    oklch(0.85 0.16 160) 65%,
+    oklch(0.63 0.26 348) 85%,
+    oklch(0.96 0.02 230)
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shiny-shimmer 3.5s linear infinite;
+}
+
+@keyframes shiny-shimmer {
+  to {
+    background-position: 300% 0;
+  }
+}
+
 /* Zelenkast bioluminiscenčen sij okoli bitja. */
 .creature-glow {
   filter: drop-shadow(0 0 40px oklch(0.72 0.14 225 / 45%))
@@ -380,6 +405,7 @@
 @media (prefers-reduced-motion: reduce) {
   .bubble,
   .bubble-burst,
+  .shiny,
   .float-slow,
   .marquee-track {
     animation: none;
