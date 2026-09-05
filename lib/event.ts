@@ -80,7 +80,7 @@ export const LINEUP: Person[] = [
     fish: "hilsha",
   },
   {
-    name: "DJ Waknu",
+    name: "Waknu",
     handle: "waknu__",
     image: `${P}/waknu.webp`,
     fish: "polenouka",
