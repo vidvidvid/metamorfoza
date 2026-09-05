@@ -27,35 +27,92 @@ export const EVENT = {
   },
 } as const;
 
-export type Person = { name: string; handle?: string };
+export type Person = {
+  name: string;
+  handle?: string;
+  /** Portret 4:5 v public/deep-sea/people (800 px). */
+  image?: string;
+  /** Kvadratni avatar 160 px (profilna slika z Instagrama). */
+  avatar?: string;
+  /** Avtor fotografije, če ga je treba navesti. */
+  credit?: string;
+  /** "END LINE - FAVORITE FISH" iz artist postov. */
+  fish?: string;
+};
+
+const P = "/deep-sea/people";
 
 export const DESIGNERS: Person[] = [
-  { name: "E. Sonc", handle: "soncno_brez.oblakov" },
-  { name: "Hana Krnc", handle: "hana.krnc" },
-  { name: "Sinja Hudnik Zaviršek", handle: "sinyuhh" },
+  {
+    name: "E. Sonc",
+    handle: "soncno_brez.oblakov",
+    image: `${P}/e-sonc.webp`,
+    fish: "mečarica",
+  },
+  {
+    name: "Hana Krnc",
+    handle: "hana.krnc",
+    image: `${P}/hana-krnc.webp`,
+    fish: "piranha",
+  },
+  {
+    name: "Sinja Hudnik Zaviršek",
+    handle: "sinyuhh",
+    image: `${P}/sinja-hudnik-zavirsek.webp`,
+  },
 ];
 
 export const LINEUP: Person[] = [
-  { name: "Z☆JA", handle: "zojagobec" },
-  { name: "GPNGPNGPN", handle: "gpngpngpn" },
-  { name: "মm.", handle: "m_read_mwo" },
-  { name: "DJ Waknu", handle: "waknu__" },
+  {
+    name: "Z☆JA",
+    handle: "zojagobec",
+    image: `${P}/zoja.webp`,
+    fish: "morska lisica",
+  },
+  { name: "GPNGPNGPN", handle: "gpngpngpn", image: `${P}/gpngpngpn.webp` },
+  {
+    name: "মm.",
+    handle: "m_read_mwo",
+    image: `${P}/mm.webp`,
+    credit: "Clara Wildberger",
+    fish: "hilsha",
+  },
+  {
+    name: "DJ Waknu",
+    handle: "waknu__",
+    image: `${P}/waknu.webp`,
+    fish: "polenouka",
+  },
 ];
 
 export const DECOR: Person[] = [
-  { name: "Pixel Bambi" },
-  { name: "Vikipiki", handle: "vikipiki.pokes" },
-  { name: "Nauticaa", handle: "maist0rica" },
+  { name: "Pixel Bambi", handle: "pixel.bambi", avatar: `${P}/avatar-pixel.bambi.webp` },
+  { name: "Vikipiki", handle: "vikipiki.pokes", avatar: `${P}/avatar-vikipiki.pokes.webp` },
+  { name: "Nauticaa", handle: "maist0rica", avatar: `${P}/avatar-maist0rica.webp` },
   { name: "Iskra Razum", handle: "iskrrrq" },
-  { name: "Vita Tusek", handle: "vitatusek" },
-  { name: "Simona", handle: "kravzla" },
-  { name: "Lucija Zivina", handle: "z1v1na" },
+  { name: "Vita Tušek", handle: "vitatusek", avatar: `${P}/avatar-vitatusek.webp` },
+  { name: "Simona", handle: "kravzla", avatar: `${P}/avatar-kravzla.webp` },
+  { name: "Lucija Zivina", handle: "z1v1na", avatar: `${P}/avatar-z1v1na.webp` },
 ];
 
 export const CREDITS: { role: string; person: Person }[] = [
-  { role: "Foto", person: { name: "Petja Muck", handle: "mu_ck_" } },
-  { role: "Grafično oblikovanje", person: { name: "sitri.wtf", handle: "sitri.wtf" } },
-  { role: "Video", person: { name: "t_soni__", handle: "t_soni__" } },
+  {
+    role: "Foto",
+    person: { name: "Petja Muck", handle: "mu_ck_", avatar: `${P}/avatar-mu_ck_.webp` },
+  },
+  {
+    role: "Grafično oblikovanje",
+    person: { name: "sitri.wtf", handle: "sitri.wtf", avatar: `${P}/avatar-sitri.wtf.webp` },
+  },
+  {
+    role: "Video",
+    person: { name: "t_soni__", handle: "t_soni__", avatar: `${P}/avatar-t_soni__.webp` },
+  },
+  {
+    role: "Make up",
+    person: { name: "Sara Šček", handle: "sara_scek", avatar: `${P}/avatar-sara_scek.webp` },
+  },
+  { role: "", person: { name: "Lovrency in mala roza muca" } },
 ];
 
 export function instagramUrl(handle: string) {

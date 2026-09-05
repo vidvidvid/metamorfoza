@@ -178,10 +178,10 @@ export default function Page() {
           <SectionLabel>Polnočne sirene</SectionLabel>
           <h2 className="headline text-4xl sm:text-5xl">Za DJ pultom</h2>
         </div>
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
           {LINEUP.map((p) => (
             <li key={p.name}>
-              <PersonCard person={p} />
+              <PersonCard person={p} featured />
             </li>
           ))}
         </ul>
@@ -213,8 +213,8 @@ export default function Page() {
               <li className="flex gap-3">
                 <span aria-hidden className="mt-0.5 text-primary">✦</span>
                 <span>
-                  Z <strong>rare / shiny karto</strong> vstopiš{" "}
-                  <strong className="text-primary">ZASTONJ</strong>!!!
+                  Z <strong>rare / shiny karto</strong> 2. edicije (Carnival)
+                  vstopiš <strong className="text-primary">ZASTONJ</strong>!!!
                 </span>
               </li>
             </ul>
@@ -252,10 +252,10 @@ export default function Page() {
           <SectionLabel>Za odsev vaše podobe na gladini resnice</SectionLabel>
           <h2 className="headline text-4xl sm:text-5xl">Ekipa</h2>
         </div>
-        <ul className="grid gap-4 sm:grid-cols-3">
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
           {CREDITS.map(({ role, person }) => (
-            <li key={role}>
-              <PersonCard person={person} label={role} featured />
+            <li key={person.name}>
+              <PersonCard person={person} label={role || undefined} featured />
             </li>
           ))}
         </ul>
@@ -374,7 +374,7 @@ function PersonCard({
   featured?: boolean;
   compact?: boolean;
 }) {
-  const inner = (
+  const meta = (
     <>
       {index !== undefined && (
         <span className="font-mono text-xs tracking-[0.3em] text-accent">
@@ -382,31 +382,65 @@ function PersonCard({
         </span>
       )}
       {label && (
-        <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
+        <span className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-accent">
           {label}
         </span>
       )}
       <span
         className={cn(
           "font-heading font-black uppercase leading-tight",
-          featured ? "text-2xl" : compact ? "text-base" : "text-lg",
+          featured ? "text-lg sm:text-xl" : compact ? "text-base" : "text-lg",
         )}
       >
         {person.name}
       </span>
       {person.handle && (
-        <span className="mt-auto inline-flex items-center gap-1.5 font-mono text-[0.7rem] tracking-wide text-muted-foreground group-hover:text-primary">
+        <span className="inline-flex items-center gap-1.5 font-mono text-[0.7rem] tracking-wide text-muted-foreground group-hover:text-primary">
           <InstagramIcon className="size-3" />@{person.handle}
+        </span>
+      )}
+      {person.fish && (
+        <span className="mt-auto pt-2 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground/80">
+          <span aria-hidden>🐟</span> {person.fish}
         </span>
       )}
     </>
   );
 
+  const inner = person.image ? (
+    <>
+      <div className="relative -mx-4 -mt-4 mb-1 aspect-[4/5] overflow-hidden rounded-t-xl sm:-mx-5 sm:-mt-5">
+        <Image
+          src={person.image}
+          alt={person.name}
+          fill
+          sizes="(max-width: 640px) 50vw, 300px"
+          className="object-cover transition duration-500 group-hover:scale-[1.03]"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background/70 to-transparent"
+        />
+        {person.credit && (
+          <span className="absolute right-2 bottom-1.5 font-mono text-[0.55rem] tracking-wide text-foreground/60">
+            foto: {person.credit}
+          </span>
+        )}
+      </div>
+      <div className="flex flex-1 flex-col gap-1.5">{meta}</div>
+    </>
+  ) : (
+    <div className="flex items-start gap-3">
+      <Avatar person={person} size={featured ? 48 : 40} />
+      <div className="flex min-w-0 flex-1 flex-col gap-1">{meta}</div>
+    </div>
+  );
+
   const className = cn(
-    "group flex h-full flex-col gap-2 rounded-xl border bg-card/60 backdrop-blur-sm transition",
+    "group flex h-full flex-col rounded-xl border bg-card/60 backdrop-blur-sm transition",
     featured
-      ? "border-primary/40 p-6 shadow-[0_0_40px_oklch(0.63_0.26_348/12%)] hover:border-primary hover:shadow-[0_0_50px_oklch(0.63_0.26_348/28%)]"
-      : "border-border/40 p-4 hover:border-accent/60",
+      ? "border-primary/40 p-4 shadow-[0_0_40px_oklch(0.63_0.26_348/12%)] hover:border-primary hover:shadow-[0_0_50px_oklch(0.63_0.26_348/28%)] sm:p-5"
+      : "border-border/40 p-3 hover:border-accent/60",
   );
 
   if (!person.handle) return <div className={className}>{inner}</div>;
@@ -420,5 +454,30 @@ function PersonCard({
     >
       {inner}
     </a>
+  );
+}
+
+function Avatar({ person, size }: { person: Person; size: number }) {
+  const style = { width: size, height: size };
+  if (person.avatar) {
+    return (
+      <Image
+        src={person.avatar}
+        alt=""
+        width={size}
+        height={size}
+        className="shrink-0 rounded-full object-cover ring-1 ring-primary/40"
+        style={style}
+      />
+    );
+  }
+  return (
+    <span
+      aria-hidden
+      style={style}
+      className="flex shrink-0 items-center justify-center rounded-full bg-secondary/60 font-heading text-sm font-black text-foreground/80 ring-1 ring-border/60"
+    >
+      {person.name.charAt(0).toUpperCase()}
+    </span>
   );
 }
