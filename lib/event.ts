@@ -44,9 +44,12 @@ export const LINEUP: Person[] = [
 
 export const DECOR: Person[] = [
   { name: "Pixel Bambi" },
-  { name: "Matic Dakič", handle: "maticdakic" },
   { name: "Vikipiki", handle: "vikipiki.pokes" },
   { name: "Nauticaa", handle: "maist0rica" },
+  { name: "Iskra Razum", handle: "iskrrrq" },
+  { name: "Vita Tusek", handle: "vitatusek" },
+  { name: "Simona", handle: "kravzla" },
+  { name: "Lucija Zivina", handle: "z1v1na" },
 ];
 
 export const CREDITS: { role: string; person: Person }[] = [

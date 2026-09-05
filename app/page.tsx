@@ -192,7 +192,7 @@ export default function Page() {
         <div className="space-y-6">
           <div className="space-y-3 text-center sm:text-left">
             <SectionLabel>Vstopnina</SectionLabel>
-            <h2 className="headline text-4xl sm:text-5xl">Na vrata</h2>
+            <h2 className="headline text-4xl sm:text-5xl">Na vratih</h2>
           </div>
           <Card className="gap-5 border-primary/30 bg-card/70 p-6 backdrop-blur-sm sm:p-8">
             <div className="flex items-center justify-center gap-4 sm:justify-start">
@@ -239,29 +239,26 @@ export default function Page() {
         />
         <div className="space-y-3 text-center">
           <SectionLabel>Globočine okrašujejo</SectionLabel>
-          <h2 className="headline text-4xl sm:text-5xl">
-            Morske deklice in deček
-          </h2>
+          <h2 className="headline text-4xl sm:text-5xl">Morske deklice</h2>
         </div>
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <ul className="flex flex-wrap justify-center gap-3">
           {DECOR.map((p) => (
-            <li key={p.name}>
+            <li key={p.name} className="w-[calc(50%-0.375rem)] sm:w-[calc(25%-0.5625rem)]">
               <PersonCard person={p} compact />
             </li>
           ))}
         </ul>
-        <dl className="mx-auto grid max-w-2xl gap-x-8 gap-y-3 text-sm sm:grid-cols-3">
+        <div className="space-y-3 pt-6 text-center">
+          <SectionLabel>Za odsev vaše podobe na gladini resnice</SectionLabel>
+          <h2 className="headline text-4xl sm:text-5xl">Ekipa</h2>
+        </div>
+        <ul className="grid gap-4 sm:grid-cols-3">
           {CREDITS.map(({ role, person }) => (
-            <div key={role} className="text-center">
-              <dt className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground">
-                {role}
-              </dt>
-              <dd className="mt-1">
-                <Handle person={person} />
-              </dd>
-            </div>
+            <li key={role}>
+              <PersonCard person={person} label={role} featured />
+            </li>
           ))}
-        </dl>
+        </ul>
       </section>
 
       {/* ---------- Prijavnica (samo dokler je razpis odprt) ---------- */}
@@ -364,28 +361,16 @@ function PriceBlock({ price, note }: { price: string; note: string }) {
   );
 }
 
-function Handle({ person }: { person: Person }) {
-  if (!person.handle) return <span>{person.name}</span>;
-  return (
-    <a
-      href={instagramUrl(person.handle)}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="underline decoration-primary/50 underline-offset-4 transition hover:text-primary"
-    >
-      @{person.handle}
-    </a>
-  );
-}
-
 function PersonCard({
   person,
   index,
+  label,
   featured = false,
   compact = false,
 }: {
   person: Person;
   index?: number;
+  label?: string;
   featured?: boolean;
   compact?: boolean;
 }) {
@@ -394,6 +379,11 @@ function PersonCard({
       {index !== undefined && (
         <span className="font-mono text-xs tracking-[0.3em] text-accent">
           {String(index).padStart(2, "0")}
+        </span>
+      )}
+      {label && (
+        <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
+          {label}
         </span>
       )}
       <span
