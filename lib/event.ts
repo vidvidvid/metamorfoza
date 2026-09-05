@@ -30,6 +30,8 @@ export const EVENT = {
 export type Person = {
   name: string;
   handle?: string;
+  /** Spletna stran, če ni Instagrama. */
+  url?: string;
   /** Portret 4:5 v public/deep-sea/people (800 px). */
   image?: string;
   /** Kvadratni avatar 160 px (profilna slika z Instagrama). */
@@ -114,11 +116,15 @@ export const CREDITS: { role: string; person: Person }[] = [
   },
   {
     role: "Creative fashion lord",
-    person: { name: "Lovrency", avatar: `${P}/avatar-lovrency.webp` },
+    person: { name: "Lovrency", handle: "lovrency", avatar: `${P}/avatar-lovrency.webp` },
   },
   {
     role: "Creative sugar unc",
-    person: { name: "Mala roza muca", avatar: `${P}/avatar-mala-roza-muca.webp` },
+    person: {
+      name: "Mala roza muca",
+      url: "http://vidvidvid.xyz/",
+      avatar: `${P}/avatar-mala-roza-muca.webp`,
+    },
   },
 ];
 

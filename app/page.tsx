@@ -399,6 +399,12 @@ function PersonCard({
           <InstagramIcon className="size-3" />@{person.handle}
         </span>
       )}
+      {!person.handle && person.url && (
+        <span className="inline-flex items-center gap-1.5 font-mono text-[0.7rem] tracking-wide text-muted-foreground group-hover:text-primary">
+          <ExternalLink className="size-3" aria-hidden />
+          {person.url.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+        </span>
+      )}
       {person.fish && (
         <span className="mt-auto pt-2 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground/80">
           <span aria-hidden>🐟</span> {person.fish}
@@ -443,11 +449,12 @@ function PersonCard({
       : "border-border/40 p-3 hover:border-accent/60",
   );
 
-  if (!person.handle) return <div className={className}>{inner}</div>;
+  const href = person.handle ? instagramUrl(person.handle) : person.url;
+  if (!href) return <div className={className}>{inner}</div>;
 
   return (
     <a
-      href={instagramUrl(person.handle)}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       className={className}
