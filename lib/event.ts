@@ -16,7 +16,6 @@ export const EVENT = {
   dressCode: "Your favorite sea creature",
   creature: {
     name: "Cnth'ula",
-    rarity: "SSR",
   },
   tickets: {
     early: "10 €",

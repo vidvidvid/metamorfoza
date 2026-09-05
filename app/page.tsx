@@ -135,12 +135,6 @@ export default function Page() {
           <h2 className="headline-outline text-5xl sm:text-6xl">
             {EVENT.creature.name}
           </h2>
-          <p className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-3 py-1 text-accent">
-            <span aria-hidden className="font-mono text-xs">✦</span>
-            <span className="spray text-base tracking-[0.2em]">
-              {EVENT.creature.rarity}
-            </span>
-          </p>
           <p className="text-muted-foreground">
             Iz morskega dna Marjanskega jaška prihaja na površje. Na vsaki
             karti tretje edicije. Bo tvoja shiny?
@@ -160,7 +154,9 @@ export default function Page() {
             <p className="font-mono text-[0.65rem] uppercase tracking-[0.35em] text-muted-foreground">
               Dress code
             </p>
-            <p className="tag mt-2 text-2xl sm:text-3xl">{EVENT.dressCode}</p>
+            <p className="mt-2 font-heading text-2xl font-black uppercase tracking-[0.02em] text-primary sm:text-3xl [text-shadow:0_0_24px_oklch(0.63_0.26_348/35%)]">
+              {EVENT.dressCode}
+            </p>
           </div>
         </div>
       </section>
@@ -209,7 +205,7 @@ export default function Page() {
           <Card className="gap-5 border-primary/30 bg-card/70 p-6 backdrop-blur-sm sm:p-8">
             <div className="flex items-center justify-center gap-4 sm:justify-start">
               <PriceBlock price={EVENT.tickets.early} note={`do ${EVENT.tickets.cutoff}`} />
-              <span aria-hidden className="headline text-3xl leading-none text-primary/40">
+              <span aria-hidden className="font-heading text-3xl leading-none font-black text-primary/40">
                 /
               </span>
               <PriceBlock price={EVENT.tickets.late} note={`po ${EVENT.tickets.cutoff}`} />
@@ -367,7 +363,9 @@ function Pill({
 function PriceBlock({ price, note }: { price: string; note: string }) {
   return (
     <div className="text-center sm:text-left">
-      <p className="headline text-4xl leading-none sm:text-5xl">{price}</p>
+      <p className="font-heading text-4xl leading-none font-black text-primary sm:text-5xl [text-shadow:0_0_24px_oklch(0.63_0.26_348/35%)]">
+        {price}
+      </p>
       <p className="mt-1 font-mono text-[0.65rem] uppercase tracking-[0.3em] text-muted-foreground">
         {note}
       </p>
