@@ -17,7 +17,7 @@ export default function Page() {
       <p className="font-mono text-xs uppercase tracking-[0.4em] text-primary/80">
         hvala
       </p>
-      <h1 className="headline text-3xl">Prijava oddana</h1>
+      <h1 className="headline text-2xl">Prijava oddana</h1>
       <p className="text-muted-foreground">
         Prejeli smo tvojo prijavo. Oglasimo se ti po e-pošti.
       </p>

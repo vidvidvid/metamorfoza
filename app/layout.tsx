@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Rubik } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Rubik,
+  Rock_Salt,
+  Sedgwick_Ave_Display,
+  Lacquer,
+} from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { Bubbles } from "@/components/bubbles";
 import { ClickBubbles } from "@/components/click-bubbles";
@@ -17,11 +24,32 @@ const geistMono = Geist_Mono({
   subsets: ["latin", "latin-ext"],
 });
 
-// Rubik v krepkih rezih se ujema z napisi na logotipu (vol. 3 / DEEP SEA).
+// Rubik v krepkih rezih za imena in številke (čitljivo, ima čšž).
 const rubik = Rubik({
   variable: "--font-rubik",
   subsets: ["latin", "latin-ext"],
   weight: ["700", "900"],
+});
+
+// Rock Salt: marker handstyle za tekoči trak in dress code. Nima čšž.
+const rockSalt = Rock_Salt({
+  variable: "--font-rock-salt",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+// Sedgwick Ave Display: wildstyle grafit za naslove (ima čšž).
+const sedgwick = Sedgwick_Ave_Display({
+  variable: "--font-sedgwick",
+  subsets: ["latin", "latin-ext"],
+  weight: "400",
+});
+
+// Lacquer: sprej s kapljami za poudarke (cene, ZASTONJ, SSR). Brez čšž.
+const lacquer = Lacquer({
+  variable: "--font-lacquer",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -48,7 +76,7 @@ export default function RootLayout({
   return (
     <html
       lang="sl"
-      className={`${geistSans.variable} ${geistMono.variable} ${rubik.variable} dark h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${rubik.variable} ${rockSalt.variable} ${sedgwick.variable} ${lacquer.variable} dark h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <SeaBackground />

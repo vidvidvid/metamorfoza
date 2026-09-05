@@ -140,7 +140,7 @@ export const CREDITS: { role: string; person: Person }[] = [
     person: { name: "Petja Muck", handle: "mu_ck_", avatar: `${P}/avatar-mu_ck_.webp` },
   },
   {
-    role: "Grafično oblikovanje",
+    role: "Grafično oblikovanje · Cnth'ula",
     person: { name: "sitri.wtf", handle: "sitri.wtf", avatar: `${P}/avatar-sitri.wtf.webp` },
   },
   {
