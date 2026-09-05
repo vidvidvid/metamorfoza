@@ -176,7 +176,7 @@ export default function Page() {
       <section className="space-y-8">
         <div className="space-y-3 text-center">
           <SectionLabel>Polnočne sirene</SectionLabel>
-          <h2 className="headline text-4xl sm:text-5xl">Za pultom</h2>
+          <h2 className="headline text-4xl sm:text-5xl">Za DJ pultom</h2>
         </div>
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {LINEUP.map((p) => (
