@@ -91,7 +91,7 @@ export const DECOR: Person[] = [
   { name: "Pixel Bambi", handle: "pixel.bambi", avatar: `${P}/avatar-pixel.bambi.webp` },
   { name: "Vikipiki", handle: "vikipiki.pokes", avatar: `${P}/avatar-vikipiki.pokes.webp` },
   { name: "Nauticaa", handle: "maist0rica", avatar: `${P}/avatar-maist0rica.webp` },
-  { name: "Iskra Razum", handle: "iskrrrq" },
+  { name: "Iskra Razum", handle: "iskrrq", avatar: `${P}/avatar-iskrrq.webp` },
   { name: "Vita Tušek", handle: "vitatusek", avatar: `${P}/avatar-vitatusek.webp` },
   { name: "Simona", handle: "kravzla", avatar: `${P}/avatar-kravzla.webp` },
   { name: "Lucija Zivina", handle: "z1v1na", avatar: `${P}/avatar-z1v1na.webp` },
