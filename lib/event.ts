@@ -98,6 +98,7 @@ export const DECOR: Person[] = [
   },
   {
     name: "Vikipiki",
+    role: "Scenografija",
     handle: "vikipiki.pokes",
     avatar: `${P}/avatar-vikipiki.pokes.webp`,
   },
