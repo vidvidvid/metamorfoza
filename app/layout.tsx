@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import {
-  Geist,
-  Geist_Mono,
-  Playfair_Display,
-  Caveat,
-  Rubik_Distressed,
-} from "next/font/google";
+import { Geist, Geist_Mono, Rubik } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { Bubbles } from "@/components/bubbles";
+import { SeaBackground } from "@/components/sea-background";
+import { EVENT } from "@/lib/event";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,27 +16,27 @@ const geistMono = Geist_Mono({
   subsets: ["latin", "latin-ext"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+// Rubik v krepkih rezih se ujema z napisi na logotipu (vol. 3 / DEEP SEA).
+const rubik = Rubik({
+  variable: "--font-rubik",
   subsets: ["latin", "latin-ext"],
-  style: ["italic"],
-});
-
-const caveat = Caveat({
-  variable: "--font-caveat",
-  subsets: ["latin", "latin-ext"],
-});
-
-const rubikDistressed = Rubik_Distressed({
-  variable: "--font-distressed",
-  subsets: ["latin", "latin-ext"],
-  weight: "400",
+  weight: ["700", "900"],
 });
 
 export const metadata: Metadata = {
-  title: "Metamorfoza — Open Call: Globočine morja",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://metamorfoza.art",
+  ),
+  title: `${EVENT.title} — ${EVENT.dateLabel}, ${EVENT.venue}`,
   description:
-    "Soustvarjaj ljubljansko podzemlje. Odprt razpis za mlade oblikovalce — tema: Globočine morja. Prijave do 1. 6. 2026.",
+    "Deep Sea Extravaganza Special se vrača izpod morskega dna. Akvatične modne kreacije, polnočne sirene in bitje Cnth'ula. Sobota, 12. 9. 2026 ob 22:30, Channel Zero, Ljubljana.",
+  openGraph: {
+    title: EVENT.title,
+    description:
+      "Sobota, 12. 9. 2026 ob 22:30 · Channel Zero, Ljubljana · Dress code: your favorite sea creature.",
+    locale: "sl_SI",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -51,9 +47,10 @@ export default function RootLayout({
   return (
     <html
       lang="sl"
-      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${caveat.variable} ${rubikDistressed.variable} dark h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${rubik.variable} dark h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="flex min-h-full flex-col bg-background text-foreground">
+        <SeaBackground />
         <Bubbles />
         {children}
         <Toaster richColors position="top-center" />

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { EVENT } from "@/lib/event";
 
-// Rok prijav: konec 1. 6. 2026 po ljubljanskem času (CEST, UTC+2).
-const DEADLINE = new Date("2026-06-01T23:59:59+02:00").getTime();
+const TARGET = new Date(EVENT.startsAt).getTime();
 
 const UNITS = [
   { label: "dni", ms: 1000 * 60 * 60 * 24 },
@@ -25,7 +25,7 @@ export function Countdown() {
   const [remaining, setRemaining] = useState<number | null>(null);
 
   useEffect(() => {
-    const tick = () => setRemaining(DEADLINE - Date.now());
+    const tick = () => setRemaining(TARGET - Date.now());
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
@@ -37,26 +37,24 @@ export function Countdown() {
 
   if (isOver) {
     return (
-      <p className="font-mono text-sm uppercase tracking-[0.2em] text-muted-foreground">
-        Rok prijav je potekel
-      </p>
+      <p className="headline text-2xl sm:text-3xl">Potop se je začel</p>
     );
   }
 
   return (
     <div className="space-y-3">
-      <p className="font-mono text-base font-semibold uppercase tracking-[0.3em] text-foreground sm:text-lg">
-        Rok prijav: 1. 6. 2026
+      <p className="font-mono text-xs uppercase tracking-[0.35em] text-muted-foreground">
+        Do potopa
       </p>
       <div
         className="flex items-stretch justify-center gap-2 sm:gap-3"
         role="timer"
-        aria-label="Odštevanje do roka prijav"
+        aria-label="Odštevanje do začetka dogodka"
       >
         {parts.map((part, i) => (
           <div key={part.label} className="flex items-stretch gap-2 sm:gap-3">
-            <div className="flex min-w-[3.5rem] flex-col items-center rounded-lg border border-border/40 bg-card/60 px-2 py-2.5 backdrop-blur-sm sm:min-w-[4.5rem] sm:px-3 sm:py-3">
-              <span className="font-mono text-2xl font-semibold tabular-nums text-primary sm:text-3xl">
+            <div className="flex min-w-[3.5rem] flex-col items-center rounded-lg border border-primary/30 bg-card/70 px-2 py-2.5 backdrop-blur-sm sm:min-w-[4.5rem] sm:px-3 sm:py-3">
+              <span className="font-heading text-2xl font-black tabular-nums text-primary sm:text-3xl">
                 {remaining === null
                   ? "––"
                   : String(part.value).padStart(2, "0")}
@@ -68,7 +66,7 @@ export function Countdown() {
             {i < parts.length - 1 && (
               <span
                 aria-hidden
-                className="self-center font-mono text-xl text-primary/30 sm:text-2xl"
+                className="self-center font-mono text-xl text-primary/40 sm:text-2xl"
               >
                 :
               </span>

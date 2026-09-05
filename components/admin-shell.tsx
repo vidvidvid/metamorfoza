@@ -14,10 +14,10 @@ export function AdminShell({
       <header className="mb-10 flex flex-wrap items-center justify-between gap-4">
         <Link href="/admin" className="flex items-center gap-3">
           <Image
-            src="/metamorfoza-wordmark.png"
+            src="/deep-sea/wordmark.webp"
             alt="Metamorfoza"
-            width={1600}
-            height={950}
+            width={931}
+            height={348}
             sizes="160px"
             className="h-auto w-[160px]"
           />

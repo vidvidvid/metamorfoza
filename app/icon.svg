@@ -2,9 +2,9 @@
 <svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 86.92 91.66">
   <defs>
     <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#e8f1f5" />
-      <stop offset="45%" stop-color="#5eead4" />
-      <stop offset="100%" stop-color="#1e3a8a" />
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="45%" stop-color="#ec2098" />
+      <stop offset="100%" stop-color="#5ba4d4" />
     </linearGradient>
     <style>
       .cls-1 {

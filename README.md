@@ -1,7 +1,12 @@
 # metamorfoza
 
-Open-call submission site for the Metamorfoza collective.
-Fashion competition: *Globočine morja* — submissions close 2026-05-31.
+Site for the Metamorfoza collective, Ljubljana.
+
+Currently promoting **Metamorfoza Vol. 3: Deep Sea** (Sat 12 Sep 2026, 22:30, Channel Zero) — event info, selected designers, lineup, tickets and the card reel. Event data lives in `lib/event.ts`; the open-call form is still wired up but hidden while `APPLICATIONS_CLOSED` is true in `lib/applications.ts`.
+
+## Assets
+
+Optimised web assets live in `public/deep-sea/` (WebP images, 720p H.264 reel). Sources are the designer's PNG/MP4 exports; regenerate with ImageMagick / ffmpeg if the artwork changes. `app/opengraph-image.jpg` is the social preview.
 
 ## Stack
 
@@ -13,7 +18,7 @@ Fashion competition: *Globočine morja* — submissions close 2026-05-31.
 
 ## Routes
 
-- `/` — public open-call landing + submission form
+- `/` — public event landing (+ submission form while the open call is open)
 - `/submit/success` — thank-you page
 - `/admin/login` — shared-password login
 - `/admin` — submissions list (filter by status)
@@ -106,8 +111,6 @@ PDF download is gated behind the admin cookie (`/api/files/[id]` streams from di
 
 - Resend email confirmation to applicant on submit
 - Per-admin auth (currently one shared password)
-- Metamorfoza metallic wordmark asset (currently CSS-gradient text)
-- Figma poster assets from dj final form
 
 ## Credits
 
