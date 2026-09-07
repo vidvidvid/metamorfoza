@@ -125,12 +125,13 @@ export const DECOR: Person[] = [
     handle: "kravzla",
     avatar: `${P}/avatar-kravzla.webp`,
   },
-  {
-    name: "Lucija Zivina",
-    role: "Luči",
-    handle: "z1v1na",
-    avatar: `${P}/avatar-z1v1na.webp`,
-  },
+  // Hidden for now — may be added back later.
+  // {
+  //   name: "Lucija Zivina",
+  //   role: "Luči",
+  //   handle: "z1v1na",
+  //   avatar: `${P}/avatar-z1v1na.webp`,
+  // },
 ];
 
 export const CREDITS: { role: string; person: Person }[] = [
