@@ -261,10 +261,10 @@ export default function Page() {
           <SectionLabel>Globočine okrašujejo</SectionLabel>
           <h2 className="headline text-4xl sm:text-5xl">Morske deklice</h2>
         </div>
-        <ul className="flex flex-wrap justify-center gap-3">
+        <ul className="grid gap-3 sm:grid-cols-3 sm:gap-4">
           {DECOR.map((p) => (
-            <li key={p.name} className="w-full sm:w-[calc(25%-0.5625rem)]">
-              <PersonCard person={p} label={p.role} compact />
+            <li key={p.name}>
+              <PersonCard person={p} label={p.role} featured />
             </li>
           ))}
         </ul>
@@ -388,13 +388,11 @@ function PersonCard({
   index,
   label,
   featured = false,
-  compact = false,
 }: {
   person: Person;
   index?: number;
   label?: string;
   featured?: boolean;
-  compact?: boolean;
 }) {
   const meta = (
     <>
@@ -411,7 +409,7 @@ function PersonCard({
       <span
         className={cn(
           "font-heading font-black uppercase leading-tight",
-          featured ? "text-lg sm:text-xl" : compact ? "text-base" : "text-lg",
+          featured ? "text-lg sm:text-xl" : "text-lg",
         )}
       >
         {person.name}
