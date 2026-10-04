@@ -180,6 +180,14 @@
   pointer-events: none;
   --goo-color: oklch(var(--goo-l) var(--goo-c) var(--goo-h));
   --goo-glow: oklch(var(--goo-l) var(--goo-c) var(--goo-h) / 55%);
+  /* Packa je pri (180px, 90px) v polju; okoli te točke na telefonu pomanjšamo. */
+  transform-origin: 180px 90px;
+}
+
+@media (max-width: 639px) {
+  .goo-burst {
+    scale: 0.6;
+  }
 }
 
 .goo-gooey {
@@ -590,13 +598,13 @@ html.googly * {
 @keyframes b2b-orbit {
   0%,
   100% {
-    transform: translate(-1rem, -1.1rem);
+    transform: translate(-0.6rem, -0.65rem);
   }
   33% {
-    transform: translate(1.1rem, -0.4rem);
+    transform: translate(0.65rem, -0.25rem);
   }
   66% {
-    transform: translate(-0.2rem, 1.2rem);
+    transform: translate(-0.15rem, 0.7rem);
   }
 }
 
@@ -627,8 +635,8 @@ html.googly * {
   clip-path: polygon(0 0, 100% 22%, 100% 78%, 0 100%);
   animation:
     b2b-breathe var(--bd) ease-in-out infinite,
-    b2b-wiggle var(--w2) ease-in-out infinite reverse;
-  animation-delay: -1.5s, -2.4s;
+    b2b-wiggle var(--w1) ease-in-out infinite;
+  animation-delay: -1.5s, 0s;
 }
 
 @keyframes b2b-breathe {
@@ -641,13 +649,15 @@ html.googly * {
   }
 }
 
+/* Obe lovki vrtimo enako: leva se dvigne, desna spusti -> ravna, nagnjena črta
+   skozi sredino mehurčka. */
 @keyframes b2b-wiggle {
   0%,
   100% {
-    rotate: -2.2deg;
+    rotate: -1.4deg;
   }
   50% {
-    rotate: 2.2deg;
+    rotate: 1.4deg;
   }
 }
 
@@ -743,7 +753,10 @@ html.googly * {
 
 /* Črke logotipa so v sliki visoko, rep "4" pa nizko: logotip potisnemo dol,
    da most in × tečeta skozi sredino črk. */
+/* Pod sm je slika nad goo-jem (z-index), na namizju goo spredaj. */
 .logo-lockup-goo > img {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: auto;
@@ -782,6 +795,7 @@ html.googly * {
   }
 
   .logo-lockup-goo > img {
+    z-index: auto;
     translate: 0 calc(2rem - 5px);
   }
 
@@ -853,8 +867,8 @@ html.googly * {
   clip-path: polygon(0 0, 100% 22%, 100% 78%, 0 100%);
   animation:
     b2b-breathe 3.4s ease-in-out infinite,
-    b2b-wiggle 5.3s ease-in-out infinite reverse;
-  animation-delay: -1.7s, -2.1s;
+    b2b-wiggle 4.7s ease-in-out infinite;
+  animation-delay: -1.7s, 0s;
 }
 
 .lg-tip {
