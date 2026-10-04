@@ -254,7 +254,7 @@ export function SubmissionForm() {
         />
         {pdf && (
           <p className="text-sm text-muted-foreground">
-            {pdf.name} — {(pdf.size / 1024 / 1024).toFixed(1)} MB
+            {pdf.name} - {(pdf.size / 1024 / 1024).toFixed(1)} MB
           </p>
         )}
         {pdfError && <p className="text-sm text-destructive">{pdfError}</p>}

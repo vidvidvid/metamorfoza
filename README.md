@@ -2,11 +2,13 @@
 
 Site for the Metamorfoza collective, Ljubljana.
 
-Currently promoting **Metamorfoza Vol. 3: Deep Sea** (Sat 12 Sep 2026, 22:30, Channel Zero) — event info, selected designers, lineup, tickets and the card reel. Event data lives in `lib/event.ts`; the open-call form is still wired up but hidden while `APPLICATIONS_CLOSED` is true in `lib/applications.ts`.
+Currently promoting **Metamorfoza Vol. 4: Deep Throat** (Sat 31 Oct 2026, 22:30, Channel Zero - Halloween, co-hosted with Channel Zero) at `/`. The previous edition, **Vol. 3: Deep Sea**, stays online as an archive at `/deep-sea`; Vol. 1 and 2 link out to ch0.org from the editions strip in the footer.
+
+Each edition has its own data file in `lib/editions/` (`deep-throat.ts`, `deep-sea.ts`), its own route layout (fonts, background, click effect) and its own stylesheet in `app/styles/`. `lib/event.ts` re-exports the current edition for the root metadata. `lib/editions/index.ts` lists all editions for the switcher. The open-call form is still wired up but hidden while `APPLICATIONS_CLOSED` is true in `lib/applications.ts`.
 
 ## Assets
 
-Optimised web assets live in `public/deep-sea/` (WebP images, 720p H.264 reel). Sources are the designer's PNG/MP4 exports; regenerate with ImageMagick / ffmpeg if the artwork changes. `app/opengraph-image.jpg` is the social preview.
+Optimised web assets live in `public/deep-throat/` (Vol. 4) and `public/deep-sea/` (Vol. 3 archive): WebP images, 720p H.264 reel. Sources are the designer's PNG/MP4 exports (`~/Pictures/metamorfoza/0N…`); regenerate with ImageMagick / ffmpeg if the artwork changes. `app/opengraph-image.jpg` is the social preview for `/`, `app/deep-sea/opengraph-image.jpg` for the archive.
 
 ## Stack
 
@@ -18,11 +20,12 @@ Optimised web assets live in `public/deep-sea/` (WebP images, 720p H.264 reel). 
 
 ## Routes
 
-- `/` — public event landing (+ submission form while the open call is open)
-- `/submit/success` — thank-you page
-- `/admin/login` — shared-password login
-- `/admin` — submissions list (filter by status)
-- `/admin/[id]` — submission detail (download PDF, set status + notes)
+- `/` - current edition landing (Vol. 4: Deep Throat; + submission form while an open call is open)
+- `/deep-sea` - Vol. 3: Deep Sea archive
+- `/submit/success` - thank-you page
+- `/admin/login` - shared-password login
+- `/admin` - submissions list (filter by status)
+- `/admin/[id]` - submission detail (download PDF, set status + notes)
 
 ## Environment variables
 
@@ -43,7 +46,7 @@ npm install
 
 # 2. configure
 cp .env.example .env.local
-# edit .env.local — point DATABASE_URL at a local Postgres
+# edit .env.local - point DATABASE_URL at a local Postgres
 
 # 3. run migrations
 npm run db:migrate
@@ -54,10 +57,10 @@ npm run dev
 
 ### Drizzle scripts
 
-- `npm run db:generate` — generate SQL from schema changes
-- `npm run db:migrate` — apply pending migrations
-- `npm run db:push` — (dev only) push schema directly without migration files
-- `npm run db:studio` — open Drizzle Studio
+- `npm run db:generate` - generate SQL from schema changes
+- `npm run db:migrate` - apply pending migrations
+- `npm run db:push` - (dev only) push schema directly without migration files
+- `npm run db:studio` - open Drizzle Studio
 
 ## Deploy to Railway
 
@@ -70,7 +73,7 @@ In a new Railway project:
 3. **Attach a Volume** to the app service:
    - Name: `uploads`
    - Mount path: `/data/uploads`
-   - Size: start small (e.g. 10 GB) — easy to grow later.
+   - Size: start small (e.g. 10 GB) - easy to grow later.
 
 ### 2. Set env vars on the app service
 
@@ -100,9 +103,9 @@ In the app service → Networking → Generate Domain (or connect a custom one l
 
 Three tables, cascading on delete:
 
-- `submissions` — name, email, phone, concept, status, admin_notes
-- `submission_links` — many-to-one with submissions (portfolio URLs)
-- `submission_files` — many-to-one (expects 1 PDF per submission, but schema allows more)
+- `submissions` - name, email, phone, concept, status, admin_notes
+- `submission_links` - many-to-one with submissions (portfolio URLs)
+- `submission_files` - many-to-one (expects 1 PDF per submission, but schema allows more)
 
 Files are streamed to `${UPLOAD_DIR}/{uuid}.pdf`. Metadata rows point to that path.
 PDF download is gated behind the admin cookie (`/api/files/[id]` streams from disk).

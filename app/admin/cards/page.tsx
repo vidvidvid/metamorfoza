@@ -100,7 +100,7 @@ export default async function Page({
         </div>
       ) : (
         <p className="text-muted-foreground">
-          Ni še nobene edicije — ustvari prvo z gumbom »Nova edicija« zgoraj.
+          Ni še nobene edicije - ustvari prvo z gumbom »Nova edicija« zgoraj.
         </p>
       )}
     </AdminShell>

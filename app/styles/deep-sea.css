@@ -1,0 +1,240 @@
+/* ---------- Metamorfoza Vol. 3: Deep Sea (arhiv na /deep-sea) ---------- */
+/* Tema velja znotraj ovoja .edition-deep-sea (app/deep-sea/layout.tsx). */
+
+.edition-deep-sea {
+  /* Deep Sea: globoka modrina, vroča roza iz logotipa, električna cian iz bitja. */
+  --background: oklch(0.13 0.035 245);
+  --foreground: oklch(0.96 0.02 230);
+  --card: oklch(0.19 0.05 250 / 62%);
+  --card-foreground: oklch(0.96 0.02 230);
+  --popover: oklch(0.18 0.05 250);
+  --popover-foreground: oklch(0.96 0.02 230);
+  --primary: oklch(0.63 0.26 348);
+  --primary-foreground: oklch(0.99 0.01 350);
+  --secondary: oklch(0.34 0.14 290);
+  --secondary-foreground: oklch(0.96 0.02 230);
+  --muted: oklch(0.22 0.04 250);
+  --muted-foreground: oklch(0.74 0.04 230);
+  --accent: oklch(0.72 0.14 225);
+  --accent-foreground: oklch(0.13 0.035 245);
+  --destructive: oklch(0.7 0.22 22);
+  --border: oklch(0.85 0.05 230 / 16%);
+  --input: oklch(0.85 0.05 230 / 18%);
+  --ring: oklch(0.63 0.26 348 / 65%);
+  --ocean: oklch(0.45 0.12 235);
+  --glow: oklch(0.85 0.16 160);
+  --shiny-a: oklch(0.63 0.26 348);
+  --shiny-b: oklch(0.96 0.02 230);
+  --shiny-c: oklch(0.72 0.14 225);
+  --shiny-d: oklch(0.85 0.16 160);
+  --chart-1: oklch(0.63 0.26 348);
+  --chart-2: oklch(0.72 0.14 225);
+  --chart-3: oklch(0.55 0.18 290);
+  --chart-4: oklch(0.85 0.16 160);
+  --chart-5: oklch(0.45 0.12 235);
+  --sidebar: oklch(0.18 0.05 250);
+  --sidebar-foreground: oklch(0.96 0.02 230);
+  --sidebar-primary: oklch(0.63 0.26 348);
+  --sidebar-primary-foreground: oklch(0.99 0.01 350);
+  --sidebar-accent: oklch(0.22 0.04 250);
+  --sidebar-accent-foreground: oklch(0.96 0.02 230);
+  --sidebar-border: oklch(0.85 0.05 230 / 12%);
+  --sidebar-ring: oklch(0.63 0.26 348 / 65%);
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.82, 0.95);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--bubble-opacity, 0.35);
+  }
+  25% {
+    transform: translateY(-28vh)
+      translateX(calc(var(--bubble-sway, 25px) * 0.45)) scale(1.02, 0.97);
+  }
+  50% {
+    transform: translateY(-55vh) translateX(var(--bubble-sway, 25px))
+      scale(0.97, 1.03);
+  }
+  75% {
+    transform: translateY(-82vh)
+      translateX(calc(var(--bubble-sway, 25px) * 0.4)) scale(1.01, 0.99);
+  }
+  90% {
+    opacity: var(--bubble-opacity, 0.35);
+  }
+  100% {
+    transform: translateY(-115vh)
+      translateX(calc(var(--bubble-sway, 25px) * -0.6)) scale(1.05);
+    opacity: 0;
+  }
+}
+
+.bubble {
+  position: absolute;
+  bottom: -60px;
+  border-radius: 9999px;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      transparent 58%,
+      oklch(0.95 0.04 230 / 35%) 78%,
+      transparent 90%
+    ),
+    radial-gradient(
+      circle at 35% 32%,
+      oklch(0.93 0.05 230 / 60%),
+      oklch(0.6 0.14 235 / 30%) 55%,
+      oklch(0.22 0.1 265 / 10%) 100%
+    );
+  border: 1px solid oklch(0.95 0.04 230 / 40%);
+  box-shadow:
+    inset 0 -6px 12px oklch(0.18 0.1 265 / 35%),
+    inset 0 3px 6px oklch(0.96 0.04 230 / 30%),
+    0 3px 14px oklch(0.55 0.14 235 / 20%);
+  animation: bubble-rise var(--bubble-duration, 18s) linear
+    var(--bubble-delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+.bubble::before {
+  content: "";
+  position: absolute;
+  top: 14%;
+  left: 18%;
+  width: 32%;
+  height: 26%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    ellipse,
+    oklch(0.98 0.03 230 / 95%),
+    oklch(0.96 0.04 230 / 0%) 65%
+  );
+  filter: blur(1px);
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  bottom: 18%;
+  right: 22%;
+  width: 16%;
+  height: 12%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    ellipse,
+    oklch(0.95 0.04 230 / 55%),
+    oklch(0.95 0.04 230 / 0%) 70%
+  );
+  filter: blur(0.5px);
+}
+
+/* Mehurčki ob kliku: isti videz, kratek naključen dvig iz točke klika. */
+.bubble-burst {
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  /* Vsak mehurček ima svoj odtenek (--h), sicer enak stekleni videz. */
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      transparent 58%,
+      oklch(0.92 0.12 var(--h, 230) / 45%) 78%,
+      transparent 90%
+    ),
+    radial-gradient(
+      circle at 35% 32%,
+      oklch(0.9 0.14 var(--h, 230) / 70%),
+      oklch(0.65 0.2 var(--h, 230) / 40%) 55%,
+      oklch(0.3 0.15 var(--h, 230) / 15%) 100%
+    );
+  border: 1px solid oklch(0.92 0.12 var(--h, 230) / 55%);
+  box-shadow:
+    inset 0 -6px 12px oklch(0.25 0.15 var(--h, 230) / 40%),
+    inset 0 3px 6px oklch(0.96 0.06 var(--h, 230) / 40%),
+    0 3px 18px oklch(0.7 0.2 var(--h, 230) / 40%);
+  animation: bubble-burst var(--burst-duration, 1.8s)
+    cubic-bezier(0.2, 0.6, 0.3, 1) var(--burst-delay, 0s) 1 both;
+}
+
+@keyframes bubble-burst {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--bubble-opacity, 0.6);
+    transform: translate(-50%, -50%) scale(1.05, 0.95);
+  }
+  55% {
+    transform: translate(
+        calc(-50% + var(--burst-sway, 0px) * 0.6),
+        calc(-50% - var(--burst-rise, 200px) * 0.55)
+      )
+      scale(0.96, 1.04);
+  }
+  85% {
+    opacity: var(--bubble-opacity, 0.6);
+  }
+  100% {
+    transform: translate(
+        calc(-50% + var(--burst-sway, 0px)),
+        calc(-50% - var(--burst-rise, 200px))
+      )
+      scale(1.15);
+    opacity: 0;
+  }
+}
+
+/* ---------- Deep Sea utilities ---------- */
+
+/* Roza naslov: Sedgwick Ave Display, wildstyle grafit (ima čšž). */
+.headline {
+  font-family: var(--font-sedgwick), var(--font-rubik), sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  color: var(--primary);
+  text-shadow: 0 0 24px oklch(0.63 0.26 348 / 45%);
+}
+
+/* Bel napis z roza obrobo, kot "METAMORFOZA" v logotipu. */
+.headline-outline {
+  font-family: var(--font-sedgwick), var(--font-rubik), sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  color: var(--foreground);
+  -webkit-text-stroke: 0.035em var(--primary);
+  paint-order: stroke fill;
+  text-shadow: 0 0 28px oklch(0.63 0.26 348 / 35%);
+}
+
+/* Rock Salt marker za tekoči trak in dress code. Brez šumnikov v besedilu! */
+.tag {
+  font-family: var(--font-rock-salt), var(--font-sedgwick), sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  line-height: 1.45;
+  color: var(--primary);
+  text-shadow: 0 0 24px oklch(0.63 0.26 348 / 40%);
+}
+
+/* Sprej s kapljami (Lacquer) za poudarke. Brez šumnikov! */
+.spray {
+  font-family: var(--font-lacquer), var(--font-rock-salt), sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* Zelenkast bioluminiscenčen sij okoli bitja. */
+.creature-glow {
+  filter: drop-shadow(0 0 40px oklch(0.72 0.14 225 / 45%))
+    drop-shadow(0 0 90px oklch(0.85 0.16 160 / 22%));
+}
+

@@ -6,10 +6,10 @@ export default function Page() {
   return (
     <main className="mx-auto flex w-full max-w-xl flex-col items-center gap-8 px-6 py-24 text-center">
       <Image
-        src="/deep-sea/wordmark.webp"
+        src="/deep-throat/logo.webp"
         alt="Metamorfoza"
-        width={931}
-        height={348}
+        width={748}
+        height={253}
         preload
         sizes="(max-width: 768px) 80vw, 400px"
         className="h-auto w-full max-w-[400px]"

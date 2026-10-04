@@ -1,30 +1,45 @@
+import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import localFont from "next/font/local";
 import { MapPin, Clock, CalendarDays, ExternalLink } from "lucide-react";
 import { InstagramIcon } from "@/components/instagram-icon";
-import { SubmissionForm } from "@/components/submission-form";
-import { Countdown } from "@/components/countdown";
-import { ReelVideo } from "@/components/reel-video";
+import { EditionNav } from "@/components/edition-nav";
+import { ReelVideo } from "@/components/deep-sea/reel-video";
 import { Card } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { APPLICATIONS_CLOSED } from "@/lib/applications";
+import { instagramUrl, type Person } from "@/lib/people";
 import {
   EVENT,
   DESIGNERS,
   LINEUP,
   DECOR,
   CREDITS,
-  instagramUrl,
-  type Person,
-} from "@/lib/event";
+} from "@/lib/editions/deep-sea";
 
-// Tentacles (Jeff Bensch) — lovke z brisalkami iz vsake črke, samo za ime bitja.
+// Arhiv tretje edicije (12. 9. 2026). Stran ostaja taka, kot je bila ob
+// dogodku; dodani sta samo arhivska pasica in preklop med edicijami.
+
+// Tentacles (Jeff Bensch) - lovke z brisalkami iz vsake črke, samo za ime bitja.
 const tentacles = localFont({
-  src: "./fonts-local/Tentacles.ttf",
+  src: "../fonts-local/Tentacles.ttf",
   display: "swap",
   variable: "--font-tentacles",
 });
+
+export const metadata: Metadata = {
+  title: `${EVENT.title} - ${EVENT.dateLabel}, ${EVENT.venue} (arhiv)`,
+  description:
+    "Arhiv tretje edicije. Deep Sea Extravaganza Special se je vrnil izpod morskega dna: akvatične modne kreacije, polnočne sirene in bitje Cnth'ula. Sobota, 12. 9. 2026 ob 22:30, Channel Zero, Ljubljana.",
+  openGraph: {
+    title: EVENT.title,
+    description:
+      "Sobota, 12. 9. 2026 ob 22:30 · Channel Zero, Ljubljana · Dress code: your favorite sea creature.",
+    locale: "sl_SI",
+    type: "website",
+  },
+};
 
 const MARQUEE = [
   "Metamorfoza vol. 3",
@@ -37,7 +52,20 @@ const MARQUEE = [
 
 export default function Page() {
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-col gap-20 px-6 pt-12 pb-16 sm:gap-28 sm:pt-20">
+    <main className="mx-auto flex w-full max-w-5xl flex-col gap-20 px-6 pt-8 pb-16 sm:gap-28 sm:pt-10">
+      {/* ---------- Arhivska pasica ---------- */}
+      <div className="-mb-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 self-center rounded-full border border-primary/30 bg-card/60 px-5 py-2.5 text-center font-mono text-[0.65rem] uppercase tracking-[0.25em] text-muted-foreground backdrop-blur-sm sm:-mb-16">
+        <span>
+          <span className="text-accent">Arhiv</span> · vol. 3 · {EVENT.dateLabel}
+        </span>
+        <Link
+          href="/"
+          className="text-primary underline decoration-primary/40 underline-offset-4 transition hover:text-foreground"
+        >
+          Naslednja: vol. 4 Deep Throat, 31. 10. →
+        </Link>
+      </div>
+
       {/* ---------- Hero ---------- */}
       <header className="flex flex-col items-center gap-8 text-center">
         <p className="font-mono text-xs uppercase tracking-[0.4em] text-accent">
@@ -46,7 +74,7 @@ export default function Page() {
         <h1 className="sr-only">{EVENT.title}</h1>
         <Image
           src="/deep-sea/logo-vol3.webp"
-          alt="Metamorfoza vol. 3: Deep Sea — Channel Zero, 12. 9. 2026"
+          alt="Metamorfoza vol. 3: Deep Sea - Channel Zero, 12. 9. 2026"
           width={931}
           height={428}
           preload
@@ -97,7 +125,7 @@ export default function Page() {
           </a>
         </div>
 
-        <Countdown />
+        <p className="tag text-xl sm:text-2xl">Potop se je zgodil</p>
       </header>
 
       {/* ---------- Tekoči trak ---------- */}
@@ -130,7 +158,7 @@ export default function Page() {
           />
           <Image
             src="/deep-sea/monster.webp"
-            alt="Cnth'ula — modro-vijolično bitje iz globočin z lovkami in kremplji (ilustracija sitri.wtf)"
+            alt="Cnth'ula - modro-vijolično bitje iz globočin z lovkami in kremplji (ilustracija sitri.wtf)"
             width={1400}
             height={1797}
             sizes="(max-width: 640px) 90vw, 520px"
@@ -281,20 +309,6 @@ export default function Page() {
         </ul>
       </section>
 
-      {/* ---------- Prijavnica (samo dokler je razpis odprt) ---------- */}
-      {!APPLICATIONS_CLOSED && (
-        <Card className="border-border/40 bg-card/60 p-6 backdrop-blur-sm sm:p-10">
-          <div className="mb-6 space-y-1">
-            <h3 className="text-xl font-semibold">Prijavnica</h3>
-            <p className="text-sm text-muted-foreground">
-              Izpolni obrazec, priloži portfolio v PDF in svoj koncept. Polja z
-              * so obvezna.
-            </p>
-          </div>
-          <SubmissionForm />
-        </Card>
-      )}
-
       {/* ---------- Noga ---------- */}
       <footer className="flex flex-col items-center gap-8 pt-4 text-center">
         <p className="headline-outline text-3xl sm:text-5xl">
@@ -327,6 +341,7 @@ export default function Page() {
             <ExternalLink className="size-3.5" aria-hidden />
           </a>
         </div>
+        <EditionNav current={3} />
         <Image
           src="/deep-sea/wordmark.webp"
           alt="Metamorfoza"

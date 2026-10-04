@@ -13,10 +13,10 @@ export default async function Page() {
     <main className="mx-auto flex w-full max-w-sm flex-col gap-8 px-6 py-24">
       <header className="space-y-4 text-center">
         <Image
-          src="/deep-sea/wordmark.webp"
+          src="/deep-throat/logo.webp"
           alt="Metamorfoza"
-          width={931}
-          height={348}
+          width={748}
+          height={253}
           preload
           sizes="280px"
           className="mx-auto h-auto w-full max-w-[280px]"

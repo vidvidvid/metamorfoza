@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { EVENT } from "@/lib/event";
-
-const TARGET = new Date(EVENT.startsAt).getTime();
+import { cn } from "@/lib/utils";
 
 const UNITS = [
   { label: "dni", ms: 1000 * 60 * 60 * 24 },
@@ -21,15 +19,29 @@ function getParts(remaining: number) {
   });
 }
 
-export function Countdown() {
+export function Countdown({
+  target,
+  label,
+  doneLabel,
+  doneClassName,
+}: {
+  /** ISO datum začetka dogodka. */
+  target: string;
+  /** Napis nad števcem, npr. "Do potopa". */
+  label: string;
+  /** Napis, ko je dogodek že mimo. */
+  doneLabel: string;
+  doneClassName?: string;
+}) {
   const [remaining, setRemaining] = useState<number | null>(null);
 
   useEffect(() => {
-    const tick = () => setRemaining(TARGET - Date.now());
+    const targetMs = new Date(target).getTime();
+    const tick = () => setRemaining(targetMs - Date.now());
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [target]);
 
   const isOver = remaining !== null && remaining <= 0;
   // Pred hidracijo prikažemo prazne vrednosti, da se strežnik in odjemalec ujemata.
@@ -37,14 +49,14 @@ export function Countdown() {
 
   if (isOver) {
     return (
-      <p className="headline text-2xl sm:text-3xl">Potop se je začel</p>
+      <p className={cn("text-2xl sm:text-3xl", doneClassName)}>{doneLabel}</p>
     );
   }
 
   return (
     <div className="space-y-3">
       <p className="font-mono text-xs uppercase tracking-[0.35em] text-muted-foreground">
-        Do potopa
+        {label}
       </p>
       <div
         className="flex items-stretch justify-center gap-2 sm:gap-3"
@@ -56,7 +68,7 @@ export function Countdown() {
             <div className="flex min-w-[3.5rem] flex-col items-center rounded-lg border border-primary/30 bg-card/70 px-2 py-2.5 backdrop-blur-sm sm:min-w-[4.5rem] sm:px-3 sm:py-3">
               <span className="font-heading text-2xl font-black tabular-nums text-primary sm:text-3xl">
                 {remaining === null
-                  ? "––"
+                  ? " -  - "
                   : String(part.value).padStart(2, "0")}
               </span>
               <span className="mt-1 font-mono text-[0.6rem] uppercase tracking-[0.25em] text-muted-foreground sm:text-xs">
