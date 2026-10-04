@@ -12,6 +12,7 @@ import {
 import { InstagramIcon } from "@/components/instagram-icon";
 import { Countdown } from "@/components/countdown";
 import { EditionNav } from "@/components/edition-nav";
+import { B2BGoo, LogoLockup } from "@/components/deep-throat/goo-svg";
 import { Card } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -71,32 +72,8 @@ export default function Page() {
         </p>
         <h1 className="sr-only">{EVENT.title}</h1>
 
-        {/* Soorganizatorja: Metamorfoza ~ goo (lime -> črno-rdeča) ~ Channel Zero.
-            Logotip Metamorfoze je v istem goo filtru kot most, da se lovka z
-            njim zlije kot metaball; Channel Zero je zunaj (ostre konice), temna
-            lovka se podvije pod emblem. */}
-        <div className="logo-lockup mb-12 sm:mb-14">
-          <div className="logo-lockup-goo">
-            <Image
-              src="/deep-throat/logo.webp"
-              alt="Metamorfoza"
-              width={748}
-              height={253}
-              preload
-              sizes="(max-width: 640px) 88vw, 460px"
-            />
-            <LogoGoo />
-          </div>
-          <Image
-            src="/deep-throat/ch0-logo.webp"
-            alt="Channel Zero"
-            width={700}
-            height={119}
-            preload
-            sizes="(max-width: 640px) 88vw, 460px"
-            className="relative z-20 h-auto w-full max-w-[460px] drop-shadow-[0_0_16px_oklch(0.96_0.02_100/40%)]"
-          />
-        </div>
+        {/* Soorganizatorja: Metamorfoza ~ goo (lime -> črno-rdeča) ~ Channel Zero. */}
+        <LogoLockup />
 
         <div className="grid items-center gap-8 sm:grid-cols-[1.1fr_0.9fr] sm:gap-x-6 sm:gap-y-10">
           <div className="flex flex-col items-center gap-5 text-center sm:items-start sm:text-left">
@@ -120,7 +97,7 @@ export default function Page() {
               className="absolute inset-[8%] -z-10 rounded-full blur-3xl"
               style={{
                 background:
-                  "radial-gradient(circle, oklch(0.66 0.23 347 / 55%), oklch(0.85 0.18 115 / 18%) 55%, transparent 75%)",
+                  "radial-gradient(circle, oklch(0.66 0.23 347 / 65%), oklch(0.85 0.18 115 / 22%) 55%, transparent 75%)",
               }}
             />
             <Image
@@ -448,30 +425,6 @@ export default function Page() {
 
 /* ---------- Pomožne komponente ---------- */
 
-/* Goo med logotipoma soorganizatorjev (znotraj .logo-lockup-goo, ki nosi
-   filter #goo skupaj z logotipom Metamorfoze). Lime na levi se preliva v
-   črno-rdečo Channel Zera; z mostu kapljajo kaplje. */
-function LogoGoo() {
-  return (
-    <span aria-hidden className="logo-goo">
-      <span className="logo-goo-blobs">
-        <i className="lg-tendril lg-tendril-a" />
-        <i className="lg-tendril lg-tendril-b" />
-        <i className="lg-tip lg-tip-a" />
-        <i className="lg-tip lg-tip-b" />
-        <i className="lg-flow lg-flow-1" />
-        <i className="lg-flow lg-flow-2" />
-        <i className="lg-flow lg-flow-3" />
-        <i className="lg-drip lg-drip-1" />
-        <i className="lg-drip lg-drip-2" />
-        <i className="lg-drip lg-drip-3" />
-        <i className="lg-sat" />
-        <i className="lg-blob" />
-      </span>
-    </span>
-  );
-}
-
 /* Emblem Channel Zero (soorganizator): zmaj v ovalu s konicami. */
 function Ch0Emblem({ className }: { className?: string }) {
   return (
@@ -655,38 +608,6 @@ function SetCard({ acts, ovals }: { acts: Act[]; ovals: number }) {
         </div>
       </div>
     </SlotCard>
-  );
-}
-
-/* Most iz sluzi med b2b parom: lovki ves čas povezujeta obe imeni, po njima
-   potujejo grude goo-ja, v sredini glavni mehurček z napisom (filter #goo
-   vse zlije v eno gmoto). */
-function B2BGoo({ variant }: { variant: number }) {
-  return (
-    <span
-      role="img"
-      aria-label="b2b"
-      className={cn(
-        "b2b-goo justify-self-center md:col-start-2 md:row-span-2 md:row-start-1 md:-mt-4 md:self-start",
-        variant % 2 === 0 ? "b2b-goo-even" : "b2b-goo-odd",
-      )}
-    >
-      <span aria-hidden className="b2b-goo-blobs">
-        <i className="b2b-tendril b2b-tendril-a" />
-        <i className="b2b-tendril b2b-tendril-b" />
-        <i className="b2b-tip b2b-tip-a" />
-        <i className="b2b-tip b2b-tip-b" />
-        <i className="b2b-flow b2b-flow-1" />
-        <i className="b2b-flow b2b-flow-2" />
-        <i className="b2b-flow b2b-flow-3" />
-        <i className="b2b-blob b2b-blob-2" />
-        <i className="b2b-blob b2b-blob-3" />
-        <i className="b2b-blob b2b-blob-1" />
-      </span>
-      <span aria-hidden className="b2b-goo-label">
-        b2b
-      </span>
-    </span>
   );
 }
 

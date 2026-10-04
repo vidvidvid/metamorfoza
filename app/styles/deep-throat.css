@@ -151,10 +151,17 @@
 }
 
 /* Magenta UV sij okoli bitja. */
+/* Namenoma en sam drop-shadow: več zloženih (zlasti 90 px) na 700 px sliki,
+   ki še lebdi, WebKit na telefonu preračuna vsak frame in zadrži izris
+   vsebine pod sliko. Na telefonu brez filtra - sij da radialni div za sliko. */
 .creature-uv {
-  filter: drop-shadow(0 0 2px oklch(0.95 0.05 350 / 60%))
-    drop-shadow(0 0 34px oklch(0.66 0.23 347 / 45%))
-    drop-shadow(0 0 90px oklch(0.85 0.18 115 / 18%));
+  filter: drop-shadow(0 0 30px oklch(0.66 0.23 347 / 45%));
+}
+
+@media (max-width: 639px) {
+  .creature-uv {
+    filter: none;
+  }
 }
 
 /* Holografski odsev čez karto edicije. */
@@ -172,9 +179,11 @@
   animation: shiny-shimmer 4.5s linear infinite;
 }
 
-/* Sluz ob kliku (ClickGoo): packa, niti in kaplje v istem oklch odtenku
-   (--goo-l/-c/-h nastavi komponenta). .goo-gooey nosi SVG filter #goo, ki
-   elemente zlije v eno gmoto; pikice so zunaj filtra, da ostanejo ostre. */
+/* Sluz ob kliku (ClickGoo): packa, niti in kaplje so SVG oblike v skupini s
+   filtrom #goo (glej click-goo.tsx, zakaj SVG). Barva prek --goo-l/-c/-h.
+   Pikice so HTML zunaj filtra, da ostanejo ostre. Animacije samo prek
+   `transform` in `fill`: WebKit iz filtra izloči elemente z animiranimi
+   translate/rotate/scale lastnostmi. */
 .goo-burst {
   position: absolute;
   pointer-events: none;
@@ -193,30 +202,25 @@
 .goo-gooey {
   position: absolute;
   inset: 0;
-  filter: url(#goo) drop-shadow(0 0 14px var(--goo-glow));
+  overflow: visible;
+  filter: drop-shadow(0 0 14px var(--goo-glow));
+}
+
+.goo-splat,
+.goo-strand,
+.goo-drop {
+  fill: var(--goo-color);
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 .goo-splat {
-  position: absolute;
-  left: 180px;
-  top: 90px;
-  translate: -50% -50%;
-  background: var(--goo-color);
-  border-radius: 48% 52% 55% 45% / 55% 50% 50% 45%;
   animation: goo-splat 2.6s cubic-bezier(0.2, 0.8, 0.3, 1) both;
 }
 
 /* Lesk na packi. */
-.goo-splat::after {
-  content: "";
-  position: absolute;
-  left: 18%;
-  top: 14%;
-  width: 38%;
-  height: 30%;
-  border-radius: 50%;
-  background: oklch(1 0 0 / 55%);
-  filter: blur(1px);
+.goo-gloss {
+  fill: oklch(1 0 0 / 55%);
 }
 
 @keyframes goo-splat {
@@ -244,21 +248,9 @@
   }
 }
 
-.goo-drip {
-  position: absolute;
-}
-
 /* Nit se raztegne od packe navzdol (scaleY od vrha) ... */
 .goo-strand {
-  position: absolute;
-  left: 0;
-  top: 0;
-  translate: -50% 0;
-  width: var(--w);
-  height: var(--fall);
-  border-radius: 999px;
-  background: var(--goo-color);
-  transform-origin: top center;
+  transform-origin: 50% 0;
   transform: scaleY(0);
   animation: goo-strand var(--dur) cubic-bezier(0.45, 0.05, 0.85, 0.5)
     var(--delay) both;
@@ -266,14 +258,6 @@
 
 /* ... kaplja pa potuje po njej do konca in se odtrga. */
 .goo-drop {
-  position: absolute;
-  left: 0;
-  top: 0;
-  translate: -50% -40%;
-  width: var(--size);
-  height: calc(var(--size) * 1.15);
-  border-radius: 50% 50% 55% 55% / 45% 45% 60% 60%;
-  background: var(--goo-color);
   animation: goo-drop var(--dur) cubic-bezier(0.45, 0.05, 0.85, 0.5)
     var(--delay) both;
 }
@@ -309,6 +293,14 @@
     transform: translateY(calc(var(--fall) * 1.08)) scale(1.1, 0.8);
     opacity: 0;
   }
+}
+
+/* #goo-debug: vse animacije izbruha zamrznjene pri ~1 s. */
+.goo-debug .goo-splat,
+.goo-debug .goo-strand,
+.goo-debug .goo-drop {
+  animation-delay: -1.1s !important;
+  animation-play-state: paused !important;
 }
 
 /* Pikice, ki brizgnejo iz packe. */
@@ -471,8 +463,15 @@ html.googly * {
 .gut-line {
   width: 48px;
   background: url("/deep-throat/gut-tile.svg") repeat-y center top / 48px 160px;
-  filter: drop-shadow(0 0 10px oklch(0.66 0.23 347 / 40%));
   animation: peristalsis 9s linear infinite;
+}
+
+/* Sij samo na namizju: drop-shadow na elementu z animiranim ozadjem se
+   preračuna vsak frame. */
+@media (min-width: 640px) {
+  .gut-line {
+    filter: drop-shadow(0 0 10px oklch(0.66 0.23 347 / 40%));
+  }
 }
 
 @keyframes peristalsis {
@@ -481,12 +480,11 @@ html.googly * {
   }
 }
 
-/* b2b most: lovki (--tendril-a proti prvemu imenu, --tendril-b proti drugemu)
-   sta ves čas raztegnjeni in povezujeta imeni, migata in dihata, po njiju v
-   obe smeri potujejo grude, v sredini se preoblikuje glavni mehurček z
-   napisom. Ovoj z blobi je namenoma velik, da SVG filter ne odreže lovk.
-   Pod md je zavrten za 90°: lovki gor in dol. Vsak par ima svoj ritem
-   (.b2b-goo-odd / .b2b-goo-even), da se ne premikata enako. */
+/* b2b most (B2BGoo, SVG): lovki ves čas povezujeta imeni, migata usklajeno
+   (ista rotacija -> ravna nagnjena črta skozi mehurček) in dihata, po njiju
+   v obe smeri potujejo grude, v sredini se preoblikuje glavni mehurček z
+   napisom. Dolžine lovk so v SVG (.b2b-d namizje / .b2b-m telefon), pod md
+   je skupina zavrtena za 90°. Vsak par ima svoj ritem (odd/even). */
 .b2b-goo {
   position: relative;
   display: block;
@@ -502,7 +500,6 @@ html.googly * {
   --p1: 0s;
   --p2: -3s;
   --p3: -1.8s;
-  --m: 9s;
 }
 
 .b2b-goo-even {
@@ -515,61 +512,99 @@ html.googly * {
   --p1: -2.2s;
   --p2: -0.7s;
   --p3: -4.1s;
-  --m: 11s;
 }
 
-.b2b-goo-blobs {
+.b2b-goo-svg {
   position: absolute;
-  inset: -5rem -10rem;
-  rotate: 90deg;
-  --tendril-a: 2.4rem;
-  --tendril-b: 4.8rem;
-  filter: url(#goo) drop-shadow(0 0 12px oklch(0.85 0.18 115 / 45%));
+  left: 50%;
+  top: 50%;
+  width: 360px;
+  height: 200px;
+  margin: -100px 0 0 -180px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Sij samo na namizju (filter nad animiranim SVG-jem je na telefonu drag). */
+@media (min-width: 640px) {
+  .b2b-goo-svg {
+    filter: drop-shadow(0 0 12px oklch(0.85 0.18 115 / 45%));
+  }
+}
+
+.b2b-rot {
+  transform: rotate(90deg);
+}
+
+.b2b-d {
+  display: none;
 }
 
 @media (min-width: 768px) {
-  .b2b-goo-blobs {
-    rotate: 0deg;
-    --tendril-a: 9.5rem;
-    --tendril-b: 9.5rem;
+  .b2b-rot {
+    transform: none;
+  }
+
+  .b2b-d {
+    display: block;
+  }
+
+  .b2b-m {
+    display: none;
   }
 }
 
 .b2b-blob,
 .b2b-tip,
-.b2b-flow {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-  border-radius: 50%;
-  background: oklch(0.85 0.18 115);
+.b2b-flow,
+.b2b-tendril {
+  fill: oklch(0.85 0.18 115);
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
-/* Glavni mehurček: utripa (transform) in se preoblikuje (border-radius). */
+/* Glavni mehurček: utripa in se vrti. */
 .b2b-blob-1 {
-  width: 2.5rem;
-  height: 2.5rem;
-  animation:
-    b2b-pulse var(--bd) ease-in-out infinite,
-    b2b-morph var(--m) ease-in-out infinite;
+  animation: goo-blob var(--bd) ease-in-out infinite;
 }
 
 .b2b-blob-2 {
-  width: 1.2rem;
-  height: 1.2rem;
-  background: oklch(0.66 0.23 347);
-  animation: b2b-orbit var(--w2) ease-in-out infinite;
+  fill: oklch(0.66 0.23 347);
+  animation: goo-orbit var(--w2) ease-in-out infinite;
 }
 
 .b2b-blob-3 {
-  width: 0.9rem;
-  height: 0.9rem;
-  animation: b2b-orbit var(--w1) ease-in-out infinite reverse;
+  animation: goo-orbit var(--w1) ease-in-out infinite reverse;
   animation-delay: -1.3s;
 }
 
-@keyframes b2b-pulse {
+@keyframes goo-blob {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  35% {
+    transform: scale(1.12, 0.9) rotate(14deg);
+  }
+  70% {
+    transform: scale(0.94, 1.08) rotate(-10deg);
+  }
+}
+
+@keyframes goo-orbit {
+  0%,
+  100% {
+    transform: translate(-9.6px, -10.4px);
+  }
+  33% {
+    transform: translate(10.4px, -4px);
+  }
+  66% {
+    transform: translate(-2.4px, 11.2px);
+  }
+}
+
+@keyframes goo-pulse {
   0%,
   100% {
     transform: scale(1);
@@ -579,137 +614,70 @@ html.googly * {
   }
 }
 
-@keyframes b2b-morph {
-  0%,
-  100% {
-    border-radius: 50%;
-    rotate: 0deg;
-  }
-  30% {
-    border-radius: 58% 42% 55% 45% / 45% 60% 40% 55%;
-    rotate: 25deg;
-  }
-  65% {
-    border-radius: 42% 58% 45% 55% / 60% 40% 60% 40%;
-    rotate: -20deg;
-  }
-}
-
-@keyframes b2b-orbit {
-  0%,
-  100% {
-    transform: translate(-0.6rem, -0.65rem);
-  }
-  33% {
-    transform: translate(0.65rem, -0.25rem);
-  }
-  66% {
-    transform: translate(-0.15rem, 0.7rem);
-  }
-}
-
-/* Lovki: ves čas povezani, dihata (transform) in migata (rotate okoli korena). */
-.b2b-tendril {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: 0.85rem;
-  border-radius: 999px;
-  background: oklch(0.85 0.18 115);
-}
-
+/* Lovki: ves čas povezani, dihata (scaleY) in migata (rotate okoli korena);
+   isti kot za obe -> ravna črta. */
 .b2b-tendril-a {
-  width: var(--tendril-a);
-  translate: -100% -50%;
-  transform-origin: right center;
-  clip-path: polygon(0 22%, 100% 0, 100% 100%, 0 78%);
-  animation:
-    b2b-breathe var(--bd) ease-in-out infinite,
-    b2b-wiggle var(--w1) ease-in-out infinite;
+  transform-origin: 100% 50%;
+  animation: goo-tendril var(--w1) ease-in-out infinite;
 }
 
 .b2b-tendril-b {
-  width: var(--tendril-b);
-  translate: 0 -50%;
-  transform-origin: left center;
-  clip-path: polygon(0 0, 100% 22%, 100% 78%, 0 100%);
-  animation:
-    b2b-breathe var(--bd) ease-in-out infinite,
-    b2b-wiggle var(--w1) ease-in-out infinite;
-  animation-delay: -1.5s, 0s;
+  transform-origin: 0 50%;
+  animation: goo-tendril var(--w1) ease-in-out infinite;
 }
 
-@keyframes b2b-breathe {
+@keyframes goo-tendril {
   0%,
   100% {
-    transform: scale(1, 1);
+    transform: rotate(-1.4deg) scaleY(1);
+  }
+  25% {
+    transform: rotate(0deg) scaleY(1.35);
   }
   50% {
-    transform: scale(1.02, 1.4);
+    transform: rotate(1.4deg) scaleY(1);
   }
-}
-
-/* Obe lovki vrtimo enako: leva se dvigne, desna spusti -> ravna, nagnjena črta
-   skozi sredino mehurčka. */
-@keyframes b2b-wiggle {
-  0%,
-  100% {
-    rotate: -1.4deg;
-  }
-  50% {
-    rotate: 1.4deg;
+  75% {
+    transform: rotate(0deg) scaleY(1.3);
   }
 }
 
 /* Konici pod imenoma. */
 .b2b-tip {
-  width: 1.3rem;
-  height: 1.3rem;
-  animation: b2b-pulse var(--bd) ease-in-out infinite;
-}
-
-.b2b-tip-a {
-  margin-left: calc(-1 * var(--tendril-a) + 0.4rem);
+  animation: goo-pulse var(--bd) ease-in-out infinite;
 }
 
 .b2b-tip-b {
-  margin-left: calc(var(--tendril-b) - 0.4rem);
   animation-delay: -1.5s;
 }
 
 /* Grude, ki potujejo po mostu v obe smeri, vsaka s svojim tempom. */
 .b2b-flow {
-  width: 1.05rem;
-  height: 1.05rem;
-  animation: b2b-flow var(--d1) ease-in-out var(--p1) infinite;
+  animation: goo-flow var(--d1) ease-in-out var(--p1) infinite;
 }
 
 .b2b-flow-2 {
-  width: 0.85rem;
-  height: 0.85rem;
-  background: oklch(0.76 0.1 358);
-  animation: b2b-flow var(--d2) ease-in-out var(--p2) infinite reverse;
+  fill: oklch(0.76 0.1 358);
+  animation: goo-flow var(--d2) ease-in-out var(--p2) infinite reverse;
 }
 
 .b2b-flow-3 {
-  width: 0.7rem;
-  height: 0.7rem;
-  animation: b2b-flow var(--d3) ease-in-out var(--p3) infinite;
+  animation: goo-flow var(--d3) ease-in-out var(--p3) infinite;
 }
 
-@keyframes b2b-flow {
+@keyframes goo-flow {
   0%,
   100% {
-    transform: translateX(calc(-1 * var(--tendril-a) + 0.6rem)) scale(1);
+    transform: translateX(calc(-1 * var(--ta) + 10px)) scale(1);
   }
   25% {
-    transform: translateX(calc(-0.5 * var(--tendril-a))) scale(1.6, 0.7);
+    transform: translateX(calc(-0.5 * var(--ta))) scale(1.6, 0.7);
   }
   50% {
-    transform: translateX(calc(var(--tendril-b) - 0.6rem)) scale(1);
+    transform: translateX(calc(var(--tb) - 10px)) scale(1);
   }
   75% {
-    transform: translateX(calc(0.5 * var(--tendril-b))) scale(1.6, 0.7);
+    transform: translateX(calc(0.5 * var(--tb))) scale(1.6, 0.7);
   }
 }
 
@@ -725,238 +693,127 @@ html.googly * {
   color: oklch(0.14 0.03 115);
 }
 
-/* Glava: Metamorfoza ~ goo ~ Channel Zero. .logo-lockup-goo nosi filter #goo
-   za logotip Metamorfoze IN goo, zato se lovka zlije z logotipom. Ovoj je z
-   odmikom/paddingom razširjen čez vrzel, da filter ne odreže lovke; Channel
-   Zero (z-20) se riše čez temno konico. Pod sm sta logotipa drug nad drugim,
-   goo je zavrten za 90°. */
+/* Glava (LogoLockup, SVG): Metamorfoza ~ goo ~ Channel Zero. Logotip
+   Metamorfoze je v isti filtrirani skupini kot goo. Lovka proti Metamorfozi je
+   lime, proti Channel Zeru rdeča -> črna (gradienta #lg-grad / #lg-grad-b v
+   GooFilter), grude med potjo spremenijo barvo. */
 .logo-lockup {
   position: relative;
-  display: grid;
-  justify-items: center;
-  align-items: center;
-  row-gap: 5.5rem;
-  --ta: 5.5rem;
-  --tb: 5rem;
-  --red: oklch(0.45 0.19 25);
-  --dark: oklch(0.2 0.06 15);
+  --red: #8e2b1e;
+  --dark: #3a1217;
 }
 
-.logo-lockup-goo {
-  position: relative;
-  width: 100%;
-  max-width: 460px;
-  padding-bottom: 10rem;
-  margin-bottom: -10rem;
-  filter: url(#goo) drop-shadow(0 0 26px oklch(0.85 0.18 115 / 35%));
-}
-
-/* Črke logotipa so v sliki visoko, rep "4" pa nizko: logotip potisnemo dol,
-   da most in × tečeta skozi sredino črk. */
-/* Pod sm je slika nad goo-jem (z-index), na namizju goo spredaj. */
-.logo-lockup-goo > img {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  height: auto;
-  translate: 0 2.25rem;
-}
-
-.logo-goo {
-  position: absolute;
-  left: 50%;
-  bottom: 5rem;
-  translate: -50% 0;
-  width: 4.5rem;
-  height: 4.5rem;
-}
-
-.logo-goo-blobs {
-  position: absolute;
-  inset: -4rem -7rem;
-  rotate: 90deg;
+/* display/height prek Tailwind razredov (hidden/sm:block, h-auto), da jih
+   neplastno pravilo tu ne povozi. */
+.logo-lockup-svg {
+  overflow: visible;
 }
 
 @media (min-width: 640px) {
-  .logo-lockup {
-    grid-template-columns: 1fr 1fr;
-    column-gap: 5.5rem;
-    --ta: 6.75rem;
-    --tb: 5.8rem;
+  .logo-lockup-svg {
+    filter: drop-shadow(0 0 26px oklch(0.85 0.18 115 / 35%));
   }
+}
 
-  .logo-lockup-goo {
-    justify-self: stretch;
-    width: calc(100% + 12rem);
-    max-width: none;
-    padding: 0 12rem 0 0;
-    margin: 0 -12rem 0 0;
-  }
-
-  .logo-lockup-goo > img {
-    z-index: auto;
-    translate: 0 calc(2rem - 5px);
-  }
-
-  .logo-goo {
-    left: auto;
-    bottom: auto;
-    right: 7rem;
-    top: 50%;
-    translate: 0 -50%;
-  }
-
-  .logo-goo-blobs {
-    rotate: 0deg;
-  }
+.logo-ch0 {
+  filter: drop-shadow(0 0 10px oklch(0.96 0.02 100 / 40%));
 }
 
 .lg-blob,
 .lg-sat,
 .lg-tip,
 .lg-flow,
-.lg-drip {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-  border-radius: 50%;
+.lg-drip,
+.lg-tendril {
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 .lg-blob {
-  width: 2.8rem;
-  height: 2.8rem;
-  background: linear-gradient(90deg, oklch(0.85 0.18 115) 25%, var(--red) 80%);
-  animation:
-    b2b-pulse 3.4s ease-in-out infinite,
-    b2b-morph 10s ease-in-out infinite;
+  fill: url(#lg-grad);
+  animation: goo-blob 3.4s ease-in-out infinite;
 }
 
 .lg-sat {
-  width: 1.1rem;
-  height: 1.1rem;
-  background: var(--red);
-  animation: b2b-orbit 4.6s ease-in-out infinite reverse;
-}
-
-.lg-tendril {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: 0.95rem;
-  border-radius: 999px;
+  fill: var(--red);
+  animation: goo-orbit 4.6s ease-in-out infinite reverse;
 }
 
 .lg-tendril-a {
-  width: var(--ta);
-  translate: -100% -50%;
-  transform-origin: right center;
-  background: oklch(0.85 0.18 115);
-  clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 90%);
-  animation:
-    b2b-breathe 3.4s ease-in-out infinite,
-    b2b-wiggle 4.7s ease-in-out infinite;
+  fill: oklch(0.85 0.18 115);
+  transform-origin: 100% 50%;
+  animation: goo-tendril 4.7s ease-in-out infinite;
 }
 
 .lg-tendril-b {
-  width: var(--tb);
-  translate: 0 -50%;
-  transform-origin: left center;
-  background: linear-gradient(90deg, var(--red), var(--dark) 85%);
-  clip-path: polygon(0 0, 100% 22%, 100% 78%, 0 100%);
-  animation:
-    b2b-breathe 3.4s ease-in-out infinite,
-    b2b-wiggle 4.7s ease-in-out infinite;
-  animation-delay: -1.7s, 0s;
+  fill: url(#lg-grad-b);
+  transform-origin: 0 50%;
+  animation: goo-tendril 4.7s ease-in-out infinite;
 }
 
 .lg-tip {
-  width: 1.5rem;
-  height: 1.5rem;
-  animation: b2b-pulse 3.4s ease-in-out infinite;
+  animation: goo-pulse 3.4s ease-in-out infinite;
 }
 
 .lg-tip-a {
-  margin-left: calc(-1 * var(--ta) + 0.5rem);
-  background: oklch(0.85 0.18 115);
+  fill: oklch(0.85 0.18 115);
 }
 
 .lg-tip-b {
-  margin-left: calc(var(--tb) - 0.5rem);
-  background: var(--dark);
+  fill: var(--dark);
   animation-delay: -1.7s;
 }
 
 /* Grude: lime na levi, rdeče-črne na desni - barva se spreminja s potjo. */
 .lg-flow {
-  width: 1rem;
-  height: 1rem;
   animation: lg-flow 7s ease-in-out infinite;
 }
 
 .lg-flow-2 {
-  width: 0.8rem;
-  height: 0.8rem;
   animation: lg-flow 9s ease-in-out -4s infinite reverse;
 }
 
 .lg-flow-3 {
-  width: 0.65rem;
-  height: 0.65rem;
   animation: lg-flow 5.5s ease-in-out -2.3s infinite;
 }
 
 @keyframes lg-flow {
   0%,
   100% {
-    transform: translateX(calc(-1 * var(--ta) + 0.8rem)) scale(1);
-    background: oklch(0.85 0.18 115);
+    transform: translateX(calc(-1 * var(--ta) + 13px)) scale(1);
+    fill: oklch(0.85 0.18 115);
   }
   25% {
     transform: translateX(calc(-0.5 * var(--ta))) scale(1.6, 0.7);
-    background: oklch(0.8 0.18 100);
+    fill: oklch(0.8 0.18 100);
   }
   50% {
-    transform: translateX(calc(var(--tb) - 0.8rem)) scale(1);
-    background: var(--dark);
+    transform: translateX(calc(var(--tb) - 13px)) scale(1);
+    fill: var(--dark);
   }
   75% {
     transform: translateX(calc(0.5 * var(--tb))) scale(1.6, 0.7);
-    background: var(--red);
+    fill: var(--red);
   }
 }
 
-/* Kaplje, ki se odtrgajo z mostu in padejo (samo v vodoravni postavitvi). */
+/* Kaplje, ki se odtrgajo z mostu in padejo (samo namizje). */
 .lg-drip {
-  display: none;
-  width: 0.8rem;
-  height: 0.9rem;
-  border-radius: 50% 50% 55% 55% / 45% 45% 60% 60%;
   animation: lg-drip 5s cubic-bezier(0.45, 0.05, 0.85, 0.5) infinite;
 }
 
-@media (min-width: 640px) {
-  .lg-drip {
-    display: block;
-  }
-}
-
 .lg-drip-1 {
-  margin-left: calc(-0.55 * var(--ta));
-  background: oklch(0.85 0.18 115);
+  fill: oklch(0.85 0.18 115);
 }
 
 .lg-drip-2 {
-  margin-left: 1.4rem;
-  background: var(--red);
+  fill: var(--red);
   animation-duration: 6.5s;
   animation-delay: -2.4s;
 }
 
 .lg-drip-3 {
-  margin-left: calc(0.7 * var(--tb));
-  background: var(--dark);
+  fill: var(--dark);
   animation-duration: 4.3s;
   animation-delay: -1.1s;
 }
@@ -968,14 +825,14 @@ html.googly * {
     opacity: 1;
   }
   50% {
-    transform: translateY(0.3rem) scale(1, 1.25);
+    transform: translateY(5px) scale(1, 1.25);
   }
   85% {
-    transform: translateY(3.6rem) scale(0.8, 1.4);
+    transform: translateY(58px) scale(0.8, 1.4);
     opacity: 1;
   }
   100% {
-    transform: translateY(5rem) scale(0.6, 1.2);
+    transform: translateY(80px) scale(0.6, 1.2);
     opacity: 0;
   }
 }

@@ -15,6 +15,15 @@ export function GooFilter() {
           />
           <feComposite in="SourceGraphic" in2="goo" operator="atop" />
         </filter>
+        {/* Gradienta za goo v glavi: lime -> rdeča (mehurček), rdeča -> črna (lovka). */}
+        <linearGradient id="lg-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0.25" stopColor="#c8dc3a" />
+          <stop offset="0.8" stopColor="#8e2b1e" />
+        </linearGradient>
+        <linearGradient id="lg-grad-b" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#8e2b1e" />
+          <stop offset="0.85" stopColor="#3a1217" />
+        </linearGradient>
       </defs>
     </svg>
   );

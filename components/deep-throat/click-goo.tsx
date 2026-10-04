@@ -24,6 +24,8 @@ type Burst = {
   id: number;
   x: number;
   y: number;
+  /** #goo-debug: zamrznjen izbruh na sredini zaslona za pregled v brskalnikih. */
+  debug?: boolean;
   /** oklch komponente barve sluzi (l, c, h). */
   l: number;
   c: number;
@@ -51,8 +53,9 @@ const ORIGIN_Y = 90;
 const r = (min: number, max: number) => min + Math.random() * (max - min);
 
 // Ob vsakem kliku/dotiku prileti packa sluzi, se razlije in pocedi navzdol.
-// Filter #goo (GooFilter v layoutu) zlije packo, niti in kaplje v eno gmoto,
-// da se niti raztegnejo in odtrgajo kot prava sluz.
+// Packa, niti in kaplje so SVG oblike v skupini s filtrom #goo (GooFilter),
+// ki jih zlije v eno gmoto. SVG namenoma: WebKit (iOS) iz filtra izloči HTML
+// elemente z animiranim transformom, SVG oblike pa ne.
 export function ClickGoo() {
   const [bursts, setBursts] = useState<Burst[]>([]);
 
@@ -99,7 +102,17 @@ export function ClickGoo() {
 
       setBursts((prev) => [
         ...prev,
-        { id, x: e.clientX, y: e.clientY, l, c, h, splat: r(48, 76), drips, specks },
+        {
+          id,
+          x: e.clientX,
+          y: e.clientY,
+          l,
+          c,
+          h,
+          splat: r(48, 76),
+          drips,
+          specks,
+        },
       ]);
       window.setTimeout(
         () => setBursts((prev) => prev.filter((b) => b.id !== id)),
@@ -108,17 +121,77 @@ export function ClickGoo() {
     };
 
     document.addEventListener("pointerdown", spawn, { passive: true });
-    return () => document.removeEventListener("pointerdown", spawn);
+
+    // Razhroščevanje (npr. iOS simulator, kjer dotiki ne pridejo do strani):
+    // /#goo-debug nariše en izbruh na sredini in ga zamrzne (glej .goo-debug).
+    let debugTimer = 0;
+    if (window.location.hash === "#goo-debug") {
+      const [l, c, h] = COLORS[0];
+      debugTimer = window.setTimeout(
+        () =>
+          setBursts([
+            {
+              id: -1,
+              x: window.innerWidth / 2,
+              y: window.innerHeight / 3,
+              l,
+              c,
+              h,
+              splat: 64,
+              debug: true,
+              drips: [
+                {
+                  id: 0,
+                  dx: -18,
+                  fall: 160,
+                  width: 8,
+                  size: 20,
+                  duration: 1.6,
+                  delay: 0.1,
+                },
+                {
+                  id: 1,
+                  dx: 6,
+                  fall: 220,
+                  width: 6,
+                  size: 16,
+                  duration: 2,
+                  delay: 0.3,
+                },
+                {
+                  id: 2,
+                  dx: 22,
+                  fall: 110,
+                  width: 9,
+                  size: 22,
+                  duration: 1.3,
+                  delay: 0.2,
+                },
+              ],
+              specks: [],
+            },
+          ]),
+        0,
+      );
+    }
+
+    return () => {
+      window.clearTimeout(debugTimer);
+      document.removeEventListener("pointerdown", spawn);
+    };
   }, []);
 
   if (bursts.length === 0) return null;
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
+    <div
+      aria-hidden
+      className="pointer-events-none fixed inset-0 z-50 overflow-hidden"
+    >
       {bursts.map((b) => (
         <div
           key={b.id}
-          className="goo-burst"
+          className={b.debug ? "goo-burst goo-debug" : "goo-burst"}
           style={
             {
               left: b.x - ORIGIN_X,
@@ -131,32 +204,59 @@ export function ClickGoo() {
             } as React.CSSProperties
           }
         >
-          <div className="goo-gooey">
-            <span
-              className="goo-splat"
-              style={{ width: b.splat, height: b.splat * 0.8 }}
+          <svg
+            className="goo-gooey"
+            width={W}
+            height={H}
+            viewBox={`0 0 ${W} ${H}`}
+          >
+            <g filter="url(#goo)">
+              <ellipse
+                className="goo-splat"
+                cx={ORIGIN_X}
+                cy={ORIGIN_Y}
+                rx={b.splat / 2}
+                ry={b.splat * 0.4}
+              />
+              {b.drips.map((d) => (
+                <g
+                  key={d.id}
+                  transform={`translate(${ORIGIN_X + d.dx} ${ORIGIN_Y})`}
+                  style={
+                    {
+                      "--fall": `${d.fall}px`,
+                      "--dur": `${d.duration}s`,
+                      "--delay": `${d.delay}s`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <rect
+                    className="goo-strand"
+                    x={-d.width / 2}
+                    y={0}
+                    width={d.width}
+                    height={d.fall}
+                    rx={d.width / 2}
+                  />
+                  <ellipse
+                    className="goo-drop"
+                    cx={0}
+                    cy={0}
+                    rx={d.size / 2}
+                    ry={d.size * 0.575}
+                  />
+                </g>
+              ))}
+            </g>
+            {/* Lesk na packi, zunaj filtra, da ostane oster. */}
+            <ellipse
+              className="goo-splat goo-gloss"
+              cx={ORIGIN_X - b.splat * 0.16}
+              cy={ORIGIN_Y - b.splat * 0.14}
+              rx={b.splat * 0.19}
+              ry={b.splat * 0.12}
             />
-            {b.drips.map((d) => (
-              <span
-                key={d.id}
-                className="goo-drip"
-                style={
-                  {
-                    left: ORIGIN_X + d.dx,
-                    top: ORIGIN_Y,
-                    "--fall": `${d.fall}px`,
-                    "--w": `${d.width}px`,
-                    "--size": `${d.size}px`,
-                    "--dur": `${d.duration}s`,
-                    "--delay": `${d.delay}s`,
-                  } as React.CSSProperties
-                }
-              >
-                <span className="goo-strand" />
-                <span className="goo-drop" />
-              </span>
-            ))}
-          </div>
+          </svg>
           {b.specks.map((s) => (
             <span
               key={s.id}
