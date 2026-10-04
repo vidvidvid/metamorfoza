@@ -77,7 +77,7 @@ export const ACTS = {
     handle: "waknu__",
     role: "Resident DJ",
     emoji: "🪿",
-    bio: "Odprte usta in rjecte aaa. Tku je rjeku dwhtar u Wajdušni, k je gospwd WAKNU pršu tožt, d ga u gwrlu nekej praska, odkar je lejtos namest kwpanja pwžiru novu muziku. Dwhtar je pogledu nutr, nč ne vidu, ma je slišu bass: tu ni za zdravt, tu je za na plesišče. No, tkrt bo u pwru z dvidevat tu praskanje spravu ven usem, k majo gwrlo. Maska gor, usta odprta in pljs tku glbuku, d vs bo Nodoshin pogwltnu cjele, pa se bo še zahvalu.",
+    bio: "Juhuhu spet smo tu, buče se šnitajo ku šalame, barve se spet barvajo, listeki odpadajo in ptički so se počasi začel šušmarit onkraj na twplčke! No, kokr pticke grejo n twplu tku bo tud waknu poskrbeu da bo temperatura lih prou za use k priletijo, se sprehodijo alpa zaplavajo na ta veseli dan v ch0!",
   },
   terranigma: {
     name: "Terranigma",
