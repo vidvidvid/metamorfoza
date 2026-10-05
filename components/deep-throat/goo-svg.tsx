@@ -129,7 +129,7 @@ export function LogoLockup() {
           <image
             href="/deep-throat/logo.webp"
             x={0}
-            y={76}
+            y={87}
             width={META.w}
             height={META.h}
           />
@@ -150,7 +150,7 @@ export function LogoLockup() {
           <g transform="translate(230 236) rotate(90)">
             <LockupGoo ta={112} tb={150} />
           </g>
-          <image href="/deep-throat/logo.webp" x={0} y={0} width={META.w} height={META.h} />
+          <image href="/deep-throat/logo.webp" x={0} y={13} width={META.w} height={META.h} />
         </g>
         <image
           className="logo-ch0"
