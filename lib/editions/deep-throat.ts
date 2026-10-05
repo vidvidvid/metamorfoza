@@ -1,7 +1,7 @@
 // Podatki o dogodku Metamorfoza Vol. 4: Deep Throat (Noč čarovnic).
 // Vir: opis dogodka za IG/FB, 4. 10. 2026 - dolg opis še ni bil končan,
 // pred objavo preveri. Nastopajoči brez poslanega opisa imajo
-// `bioIsPlaceholder: true` (izmišljen opis, zamenjaj) - trenutno samo Terranigma.
+// `bioIsPlaceholder: true` (izmišljen opis, zamenjaj).
 import type { Person } from "@/lib/people";
 
 export const EVENT = {
@@ -59,21 +59,28 @@ export type Act = Person & {
   emoji?: string;
 };
 
+const P = "/deep-throat/people";
+
+// Portreti (kvadrat 480 px) v public/deep-throat/people: iz Drive mape
+// nastopajočih, Waknu iz Vol. 3, shizika in Nace1518 s profilne slike na IG.
 export const ACTS = {
   shizika: {
     name: "shizika",
+    image: `${P}/shizika.webp`,
     handle: "shizika._",
     role: "DJ",
     bio: "SHIZIKA združuje svetovne ritme v zvok, ki udari z vso močjo, a hkrati deluje toplo in osvobajajoče. Njeni seti temeljijo na perkusijah, igrivih vokalih in heavy bass selekcijah, ki razgrejejo prostor in vas ne pustijo stati na mestu. Navdih črpa iz svojega makedonskega porekla in časa, ki ga je preživela na Portugalskem, zdaj pa na ljubljanskih plesiščih ustvarja glasbo, ki združuje latino, balkan, afro, arabske in britanske klubske zvoke.",
   },
   dvidevat: {
     name: "dvidevat",
+    image: `${P}/dvidevat.webp`,
     handle: "dvidevat",
     role: "DJ",
     bio: "dvidevat ne izbira med natančnostjo in kaosom - dirigira obema. Slovenska producentka in DJ-ka, ki zdaj živi v Amsterdamu, se giblje po raznoliki zvočni pokrajini electra, surovih breakov in visokooktanskega techna. Njen zvok uspeva v vmesnem prostoru - instinktiven, a premišljen - gnan z zagonom, tam, kjer se srečata struktura in nepredvidljivost. Medtem ko še naprej premika meje in raziskuje nova zvočna ozemlja, dvidevat hitro postaja eden najbolj prepričljivih glasov elektronske glasbe.",
   },
   waknu: {
     name: "Waknu",
+    image: `${P}/waknu.webp`,
     handle: "waknu__",
     role: "Resident DJ",
     emoji: "🪿",
@@ -81,19 +88,22 @@ export const ACTS = {
   },
   terranigma: {
     name: "Terranigma",
+    image: `${P}/terranigma.webp`,
+    credit: "Bernarda Čonič",
     handle: "terranigma_crt",
     role: "DJ",
-    bioIsPlaceholder: true,
-    bio: "Lomljeni ritmi brez usmiljenja - jungle, drum & bass in footwork, zrezani na 170 bpm. V b2b-ju s Sunnehom bosta plesišče v celoti pogoltnila, brez žvečenja.",
+    bio: "Črt Trkman alias Terranigma je producent, sound designer in DJ, ki na domači elektronski sceni vztraja že več kot desetletje. Začel je kot promotor v legendarnem K4 in tam postal rezident, nato pa osvojil podzemne klube in festivale po Sloveniji. Od dub techna in UK bassa je prišel do hibrida med elektrom, acidom in technom, ki ga igra tudi v živo. Izdaje pri Kamizdatu in DE/FRAGMENT, zvočno oblikovanje za Svetlobno gverilo.",
   },
   sunneh: {
     name: "Sunneh",
+    image: `${P}/sunneh.webp`,
     handle: "sani.sunneh",
     role: "DJ",
     bio: "Prekaljeni Ljubljančan, ki ga najpogosteje povezujemo z metelkovsko temnico Channel Zero. Debitiral je leta 2005 na Trnfestu z old school jungle in drum & bass setom, kasneje tam vodil program, v naslednjih petnajstih letih pa nastopal po klubih in festivalih kot član kultnih ekip Soulless, Krunch it!!, Footwerk, Filter in Dub Lab. Danes je idejni vodja 170-bpm zaprisežencev Frag::ments.",
   },
   nace: {
     name: "Nace1518",
+    image: `${P}/nace1518.webp`,
     handle: "nace1518novak",
     role: "Performans",
     bio: "Opolnoči se izvije iz sluznice.",
@@ -165,8 +175,6 @@ export const CHILL_ZONE = {
   text: "Fluorescentna cona pod blacklightom v drobovju kluba. Prebavi se, preden te plesišče spet pogoltne.",
   emoji: "🧪",
 } as const;
-
-const P = "/deep-throat/people";
 
 export const CREW: Person[] = [
   {

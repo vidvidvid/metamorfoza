@@ -569,9 +569,20 @@ function TimeMarker({
   );
 }
 
-function SlotCard({ children }: { children: React.ReactNode }) {
+function SlotCard({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="rounded-xl border border-primary/30 bg-card/60 p-5 backdrop-blur-sm">
+    <div
+      className={cn(
+        "rounded-xl border border-primary/30 bg-card/60 p-5 backdrop-blur-sm",
+        className,
+      )}
+    >
       {children}
     </div>
   );
@@ -590,8 +601,9 @@ function SetCard({ acts, ovals }: { acts: Act[]; ovals: number }) {
     );
   }
   const [a, b] = acts;
+  // overflow-clip: škatla goo SVG-ja je širša od kartice na telefonu.
   return (
-    <SlotCard>
+    <SlotCard className="overflow-clip">
       <div className="grid gap-5 md:grid-cols-[1fr_auto_1fr] md:grid-rows-[auto_auto] md:gap-x-6 md:gap-y-4">
         <div className="relative z-10 md:col-start-1 md:row-start-1">
           <ActHeader act={a} ovals={ovals} />
@@ -710,6 +722,31 @@ function ActHeader({ act, ovals }: { act: Act; ovals: number }) {
       : "hover:drop-shadow-[0_0_14px_oklch(0.85_0.18_115/60%)]";
   return (
     <div className="flex flex-col items-center gap-2 text-center">
+      {act.image && (
+        <a
+          href={instagramUrl(act.handle!)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn("relative mb-1 transition", glow)}
+        >
+          <Image
+            src={act.image}
+            alt={act.name}
+            width={480}
+            height={480}
+            sizes="128px"
+            className={cn(
+              "size-28 rounded-full object-cover ring-2 sm:size-32",
+              ovals === 0 ? "ring-accent/70" : "ring-primary/70",
+            )}
+          />
+        </a>
+      )}
+      {act.image && act.credit && (
+        <span className="-mt-1 font-mono text-[0.5rem] tracking-wide text-muted-foreground/70">
+          foto: {act.credit}
+        </span>
+      )}
       <a
         href={instagramUrl(act.handle!)}
         target="_blank"

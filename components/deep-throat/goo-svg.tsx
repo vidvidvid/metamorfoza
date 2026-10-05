@@ -6,88 +6,90 @@ import { cn } from "@/lib/utils";
 // Animacije v app/styles/deep-throat.css uporabljajo samo `transform`
 // (ne `translate`/`rotate`/`scale` lastnosti - tudi te WebKit izloči).
 
-/* Dolžine lovk v px (1rem = 16px): namizje 9.5rem, telefon 2.4rem / 4.8rem. */
-const B2B = { d: { a: 152, b: 152 }, m: { a: 38, b: 77 } };
+/* Dolžine lovk v px (1rem = 16px): namizje 12.5rem (sežejo pod portreta),
+   telefon 2.4rem / 4.8rem. */
+const B2B = { d: { a: 200, b: 200 }, m: { a: 38, m: 0, b: 77 } };
 
-/* Most iz sluzi med b2b parom: lovki ves čas povezujeta imeni, po njiju
-   potujejo grude, v sredini utripa glavni mehurček z napisom. Pod md je
-   skupina zavrtena za 90° (lovki gor in dol). Vsak par ima svoj ritem. */
+/* Vsaka stran mostu ima tri niti: debelo osrednjo in dve tanjši, ki se
+   pahljačasto razpreta (--base kot) in migata vsaka s svojo fazo. */
+const STRANDS = [
+  { cls: "b2b-strand-1", h: 13.6, dy: 0 },
+  { cls: "b2b-strand-2", h: 7, dy: -5 },
+  { cls: "b2b-strand-3", h: 6, dy: 5 },
+];
+
+/* Most iz sluzi med b2b parom: več niti ves čas povezuje imeni, migajo
+   usklajeno (ista rotacija -> ravna nagnjena črta skozi mehurček), po njih v
+   obe smeri potujejo grude, z mostu kapljajo kaplje (namizje), v sredini se
+   preoblikuje glavni mehurček z napisom. Dolžine so v SVG (.b2b-d namizje /
+   .b2b-m telefon), pod md je skupina zavrtena za 90°. Vsak par ima svoj
+   ritem (odd/even). */
 export function B2BGoo({ variant }: { variant: number }) {
   return (
     <span
       role="img"
       aria-label="b2b"
       className={cn(
-        "b2b-goo justify-self-center md:col-start-2 md:row-span-2 md:row-start-1 md:-mt-4 md:self-start",
+        "b2b-goo justify-self-center md:col-start-2 md:row-span-2 md:row-start-1 md:mt-7 md:self-start",
         variant % 2 === 0 ? "b2b-goo-even" : "b2b-goo-odd",
       )}
     >
       <svg
         aria-hidden
         className="b2b-goo-svg"
-        width={360}
-        height={200}
-        viewBox="-180 -100 360 200"
+        width={460}
+        height={220}
+        viewBox="-230 -110 460 220"
       >
         <g className="b2b-rot">
           <g filter="url(#goo)">
-            {(["d", "m"] as const).map((bp) => (
-              <g key={bp} className={bp === "d" ? "b2b-d" : "b2b-m"}>
-                <rect
-                  className="b2b-tendril b2b-tendril-a"
-                  x={-B2B[bp].a}
-                  y={-6.8}
-                  width={B2B[bp].a}
-                  height={13.6}
-                  rx={6.8}
-                />
-                <rect
-                  className="b2b-tendril b2b-tendril-b"
-                  x={0}
-                  y={-6.8}
-                  width={B2B[bp].b}
-                  height={13.6}
-                  rx={6.8}
-                />
-                <circle className="b2b-tip" cx={-B2B[bp].a + 6} cy={0} r={10.4} />
-                <circle
-                  className="b2b-tip b2b-tip-b"
-                  cx={B2B[bp].b - 6}
-                  cy={0}
-                  r={10.4}
-                />
-                <circle
-                  className="b2b-flow b2b-flow-1"
-                  cx={0}
-                  cy={0}
-                  r={8.4}
-                  style={
-                    { "--ta": `${B2B[bp].a}px`, "--tb": `${B2B[bp].b}px` } as React.CSSProperties
-                  }
-                />
-                <circle
-                  className="b2b-flow b2b-flow-2"
-                  cx={0}
-                  cy={0}
-                  r={6.8}
-                  style={
-                    { "--ta": `${B2B[bp].a}px`, "--tb": `${B2B[bp].b}px` } as React.CSSProperties
-                  }
-                />
-                <circle
-                  className="b2b-flow b2b-flow-3"
-                  cx={0}
-                  cy={0}
-                  r={5.6}
-                  style={
-                    { "--ta": `${B2B[bp].a}px`, "--tb": `${B2B[bp].b}px` } as React.CSSProperties
-                  }
-                />
-              </g>
-            ))}
+            {(["d", "m"] as const).map((bp) => {
+              const { a, b } = B2B[bp];
+              const vars = { "--ta": `${a}px`, "--tb": `${b}px` } as React.CSSProperties;
+              return (
+                <g key={bp} className={bp === "d" ? "b2b-d" : "b2b-m"} style={vars}>
+                  {STRANDS.map((s) => (
+                    <rect
+                      key={`a-${s.cls}`}
+                      className={`b2b-tendril b2b-tendril-a ${s.cls}`}
+                      x={-a}
+                      y={s.dy - s.h / 2}
+                      width={a}
+                      height={s.h}
+                      rx={s.h / 2}
+                    />
+                  ))}
+                  {STRANDS.map((s) => (
+                    <rect
+                      key={`b-${s.cls}`}
+                      className={`b2b-tendril b2b-tendril-b ${s.cls}`}
+                      x={0}
+                      y={s.dy - s.h / 2}
+                      width={b}
+                      height={s.h}
+                      rx={s.h / 2}
+                    />
+                  ))}
+                  <circle className="b2b-tip" cx={-a + 6} cy={0} r={11} />
+                  <circle className="b2b-tip b2b-tip-b" cx={b - 6} cy={0} r={11} />
+                  <circle className="b2b-flow b2b-flow-1" cx={0} cy={0} r={8.4} />
+                  <circle className="b2b-flow b2b-flow-2" cx={0} cy={0} r={6.8} />
+                  <circle className="b2b-flow b2b-flow-3" cx={0} cy={0} r={5.6} />
+                  <circle className="b2b-flow b2b-flow-4" cx={0} cy={-3} r={4.8} />
+                  {bp === "d" && (
+                    <>
+                      <ellipse className="b2b-drip b2b-drip-1" cx={-a * 0.55} cy={2} rx={5.6} ry={6.4} />
+                      <ellipse className="b2b-drip b2b-drip-2" cx={-a * 0.2} cy={2} rx={4.4} ry={5} />
+                      <ellipse className="b2b-drip b2b-drip-3" cx={b * 0.4} cy={2} rx={5} ry={5.8} />
+                      <ellipse className="b2b-drip b2b-drip-4" cx={b * 0.72} cy={2} rx={4.2} ry={4.8} />
+                    </>
+                  )}
+                </g>
+              );
+            })}
             <circle className="b2b-blob b2b-blob-2" cx={0} cy={0} r={9.6} />
             <circle className="b2b-blob b2b-blob-3" cx={0} cy={0} r={7.2} />
-            <ellipse className="b2b-blob b2b-blob-1" cx={0} cy={0} rx={20} ry={20} />
+            <ellipse className="b2b-blob b2b-blob-1" cx={0} cy={0} rx={21} ry={21} />
           </g>
         </g>
       </svg>
